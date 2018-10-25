@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If >= 0, prevent cells that are this much higher than the actor from being revealed.")]
 		public readonly int MaxHeightDelta = -1;
 
+		[Desc("Can this shroud affection be blocked by terrain facings?")]
+		public readonly bool BlockableByTerrainFacing = false;
+
 		[Desc("Possible values are CenterPosition (measure range from the center) and ",
 			"Footprint (measure range from the footprint)")]
 		public readonly VisibilityType Type = VisibilityType.Footprint;
@@ -53,22 +56,30 @@ namespace OpenRA.Mods.Common.Traits
 			if (range == WDist.Zero)
 				return NoCells;
 
+			PPos[] cells;
+
 			if (Info.Type == VisibilityType.Footprint)
 			{
 				// PERF: Reuse collection to avoid allocations.
 				footprint.UnionWith(self.OccupiesSpace.OccupiedCells()
 					.SelectMany(kv => Shroud.ProjectedCellsInRange(map, kv.First, range, Info.MaxHeightDelta)));
-				var cells = footprint.ToArray();
+				cells = footprint.ToArray();
 				footprint.Clear();
-				return cells;
+			}
+			else
+			{
+				var pos = self.CenterPosition;
+				if (Info.Type == VisibilityType.GroundPosition)
+					pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
+
+				cells = Shroud.ProjectedCellsInRange(map, pos, range, Info.MaxHeightDelta)
+					.ToArray();
 			}
 
-			var pos = self.CenterPosition;
-			if (Info.Type == VisibilityType.GroundPosition)
-				pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
+			if (!Info.BlockableByTerrainFacing)
+				return cells;
 
-			return Shroud.ProjectedCellsInRange(map, pos, range, Info.MaxHeightDelta)
-				.ToArray();
+			return cells.Where(cell => !WorldExtensions.IsLineBlockedByTileFacing(self.World, self.CenterPosition, self.World.Map.CenterOfCell(new CPos(cell.U, cell.V)))).ToArray();
 		}
 
 		void ITick.Tick(Actor self)
