@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common
@@ -113,6 +114,79 @@ namespace OpenRA.Mods.Common
 
 			// Projection falls on the segment
 			return WPos.Lerp(lineEnd, lineStart, t, squaredLength);
+		}
+
+		public static IEnumerable<CPos> FindTilesOnLine(World world, WPos lineStart, WPos lineEnd)
+		{
+			var startTile = world.Map.CellContaining(lineStart);
+			var endTile = world.Map.CellContaining(lineEnd);
+
+			var direction = new int2(
+				endTile.X > startTile.X ? 1 : endTile.X < startTile.X ? -1 : 0,
+				endTile.Y > startTile.Y ? 1 : endTile.Y < startTile.Y ? -1 : 0
+			);
+
+			var tiles = new List<CPos>();
+			
+			var current = startTile;
+			tiles.Add(startTile);
+
+			while (!current.Equals(endTile))
+			{
+				if (current.X == endTile.X)
+				{
+					for (var y = current.Y + direction.Y; y != endTile.Y; y += direction.Y)
+						tiles.Add(new CPos(current.X, y));
+					tiles.Add(endTile);
+					break;
+				}
+				
+				if (current.Y == endTile.Y)
+				{
+					for (var x = current.X + direction.X; x != endTile.X; x += direction.X)
+						tiles.Add(new CPos(x, current.Y));
+					tiles.Add(endTile);
+					break;
+				}
+				
+				var nextCell = current + new CVec(direction.X, 0);
+				var nearestPoint = MinimumPointLineProjection(lineStart, lineEnd, world.Map.CenterOfCell(nextCell));
+
+				if (world.Map.CellContaining(nearestPoint) != nextCell)
+					nextCell = current + new CVec(0, direction.Y);
+
+				current = nextCell;
+				tiles.Add(nextCell);
+			}
+
+			return tiles;
+		}
+
+		public static bool IsLineBlockedByTileFacing(World world, WPos from, WPos to)
+		{
+			var tiles = FindTilesOnLine(world, from, to);
+			
+			foreach (var tile in tiles)
+			{
+				var tileInfo = world.Map.Rules.TileSet.GetTileInfo(world.Map.Tiles[tile]);
+				
+				if (tileInfo.Facing == 256)
+					return true;
+				
+				if (tileInfo.Facing == -1)
+					continue;
+
+				var targetFacing = (to - from).Yaw.Facing;
+
+				var angle = targetFacing - tileInfo.Facing;
+				while (angle < -128) angle += 256;
+				while (angle > 128) angle -= 256;
+
+				if (Math.Abs(angle) >= 64)
+					return true;
+			}
+
+			return false;
 		}
 	}
 }

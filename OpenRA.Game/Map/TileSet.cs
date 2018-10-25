@@ -25,6 +25,7 @@ namespace OpenRA
 		public readonly byte TerrainType = byte.MaxValue;
 		public readonly byte Height;
 		public readonly byte RampType;
+		public readonly short Facing = -1;
 		public readonly Color LeftColor;
 		public readonly Color RightColor;
 
@@ -39,6 +40,9 @@ namespace OpenRA
 
 			if (RampType != 0)
 				root.Add(FieldSaver.SaveField(this, "RampType"));
+
+			if (Facing != -1)
+				root.Add(FieldSaver.SaveField(this, "Facing"));
 
 			if (LeftColor != tileSet.TerrainInfo[TerrainType].Color)
 				root.Add(FieldSaver.SaveField(this, "LeftColor"));
