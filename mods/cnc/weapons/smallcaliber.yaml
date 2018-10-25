@@ -94,9 +94,10 @@ Pistol:
 ^LightMG:
 	Inherits: ^HeavyMG
 	ReloadDelay: 20
-	Range: 4c0
+	Range: 10c0
 	InvalidTargets: Wall
 	Report: mgun2.aud
+	BlockableByTerrainFacing: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 1000
