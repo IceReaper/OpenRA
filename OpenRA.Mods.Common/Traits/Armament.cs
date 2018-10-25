@@ -246,6 +246,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Weapon.IsValidAgainst(target, self.World, self))
 				return false;
 
+			if (Weapon.BlockableByTerrainFacing && WorldExtensions.IsLineBlockedByTileFacing(self.World, self.CenterPosition, target.CenterPosition))
+				return false;
+
 			return true;
 		}
 
