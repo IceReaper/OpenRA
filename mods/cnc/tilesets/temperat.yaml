@@ -293,8 +293,10 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+				Facing: 128
 			2: Clear
 			3: Rock
+				Facing: 128
 	Template@14:
 		Id: 14
 		Images: s02.tem
@@ -302,11 +304,16 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 96
 			1: Clear
 			2: Rock
+				Facing: 96
 			3: Rock
+				Facing: 96
 			4: Rock
+				Facing: 96
 			5: Rock
+				Facing: 96
 	Template@15:
 		Id: 15
 		Images: s03.tem
@@ -314,9 +321,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
+				Facing: 128
 			2: Rock
+				Facing: 128
 			3: Rock
+				Facing: 128
 	Template@16:
 		Id: 16
 		Images: s04.tem
@@ -324,9 +335,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
+				Facing: 128
 			2: Rock
+				Facing: 128
 			3: Rock
+				Facing: 128
 	Template@17:
 		Id: 17
 		Images: s05.tem
@@ -334,9 +349,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
+				Facing: 128
 			2: Rock
+				Facing: 128
 			3: Rock
+				Facing: 128
 	Template@18:
 		Id: 18
 		Images: s06.tem
@@ -345,9 +364,13 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Rock
+				Facing: 160
 			2: Rock
+				Facing: 160
 			3: Rock
+				Facing: 160
 			4: Rock
+				Facing: 160
 	Template@19:
 		Id: 19
 		Images: s07.tem
@@ -355,8 +378,10 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
 			2: Rock
+				Facing: 128
 			3: Rock
 	Template@20:
 		Id: 20
@@ -367,7 +392,9 @@ Templates:
 			0: Rock
 			1: Clear
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 64
 	Template@21:
 		Id: 21
 		Images: s09.tem
@@ -375,11 +402,16 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 96
 			1: Rock
+				Facing: 96
 			2: Rock
+				Facing: 96
 			3: Clear
 			4: Rock
+				Facing: 96
 			5: Rock
+				Facing: 96
 	Template@22:
 		Id: 22
 		Images: s10.tem
@@ -387,9 +419,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Rock
+				Facing: 64
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 64
 	Template@23:
 		Id: 23
 		Images: s11.tem
@@ -397,9 +433,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Rock
+				Facing: 64
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 64
 	Template@24:
 		Id: 24
 		Images: s12.tem
@@ -407,9 +447,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Rock
+				Facing: 64
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 64
 	Template@25:
 		Id: 25
 		Images: s13.tem
@@ -418,9 +462,12 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Rock
+				Facing: 32
 			2: Clear
 			3: Rock
+				Facing: 32
 			4: Rock
+				Facing: 32
 			5: Clear
 	Template@26:
 		Id: 26
@@ -429,6 +476,7 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Clear
 			2: Clear
 	Template@27:
@@ -441,6 +489,7 @@ Templates:
 			1: Clear
 			2: Rock
 			3: Rock
+				Facing: 0
 	Template@28:
 		Id: 28
 		Images: s16.tem
@@ -449,8 +498,11 @@ Templates:
 		Tiles:
 			0: Clear
 			2: Rock
+				Facing: 24
 			3: Rock
+				Facing: 24
 			5: Rock
+				Facing: 24
 	Template@29:
 		Id: 29
 		Images: s17.tem
@@ -458,9 +510,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 0
 			1: Rock
+				Facing: 0
 			2: Rock
+				Facing: 0
 			3: Rock
+				Facing: 0
 	Template@30:
 		Id: 30
 		Images: s18.tem
@@ -468,9 +524,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 0
 			1: Rock
+				Facing: 0
 			2: Rock
+				Facing: 0
 			3: Rock
+				Facing: 0
 	Template@31:
 		Id: 31
 		Images: s19.tem
@@ -478,9 +538,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 0
 			1: Rock
+				Facing: 0
 			2: Rock
+				Facing: 0
 			3: Rock
+				Facing: 0
 	Template@32:
 		Id: 32
 		Images: s20.tem
@@ -489,8 +553,11 @@ Templates:
 		Tiles:
 			1: Clear
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 64
 			4: Rock
+				Facing: 64
 			5: Clear
 	Template@33:
 		Id: 33
@@ -516,9 +583,13 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Rock
+				Facing: 160
 			2: Rock
+				Facing: 160
 			3: Rock
+				Facing: 160
 			4: Rock
+				Facing: 160
 			5: Clear
 	Template@36:
 		Id: 36
@@ -527,9 +598,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 192
 			1: Rock
+				Facing: 192
 			2: Rock
+				Facing: 192
 			3: Rock
+				Facing: 192
 	Template@37:
 		Id: 37
 		Images: s25.tem
@@ -537,9 +612,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 192
 			1: Rock
+				Facing: 192
 			2: Rock
+				Facing: 192
 			3: Rock
+				Facing: 192
 	Template@38:
 		Id: 38
 		Images: s26.tem
@@ -547,9 +626,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 192
 			1: Rock
+				Facing: 192
 			2: Rock
+				Facing: 192
 			3: Rock
+				Facing: 192
 	Template@39:
 		Id: 39
 		Images: s27.tem
@@ -557,11 +640,15 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 224
 			1: Rock
+				Facing: 224
 			2: Clear
 			3: Clear
 			4: Rock
+				Facing: 224
 			5: Rock
+				Facing: 224
 	Template@40:
 		Id: 40
 		Images: s28.tem
@@ -569,7 +656,9 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 192
 			1: Rock
+				Facing: 192
 			3: Rock
 	Template@41:
 		Id: 41
@@ -578,9 +667,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Rock
+				Facing: 96
 			2: Rock
+				Facing: 96
 			3: Rock
+				Facing: 128
 	Template@42:
 		Id: 42
 		Images: s30.tem
@@ -588,9 +681,12 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 32
 			1: Clear
 			2: Rock
+				Facing: 64
 			3: Rock
+				Facing: 32
 	Template@43:
 		Id: 43
 		Images: s31.tem
@@ -600,7 +696,9 @@ Templates:
 			0: Clear
 			1: Clear
 			2: Rock
+				Facing: 224
 			3: Rock
+				Facing: 192
 	Template@44:
 		Id: 44
 		Images: s32.tem
@@ -608,8 +706,11 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 160
 			1: Rock
+				Facing: 192
 			2: Rock
+				Facing: 128
 	Template@45:
 		Id: 45
 		Images: s33.tem
@@ -617,9 +718,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 192
 			1: Rock
+				Facing: 224
 			2: Rock
+				Facing: 224
 			3: Rock
+				Facing: 0
 	Template@46:
 		Id: 46
 		Images: s34.tem
@@ -627,9 +732,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 160
 			1: Rock
+				Facing: 128
 			2: Rock
+				Facing: 192
 			3: Rock
+				Facing: 160
 	Template@47:
 		Id: 47
 		Images: s35.tem
@@ -637,9 +746,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
+				Facing: 96
 			2: Rock
+				Facing: 96
 			3: Rock
+				Facing: 64
 	Template@48:
 		Id: 48
 		Images: s36.tem
@@ -647,9 +760,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 32
 			1: Rock
+				Facing: 64
 			2: Rock
+				Facing: 0
 			3: Rock
+				Facing: 32
 	Template@49:
 		Id: 49
 		Images: s37.tem
@@ -657,9 +774,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 256
 			1: Rock
+				Facing: 256
 			2: Rock
+				Facing: 256
 			3: Rock
+				Facing: 256
 	Template@50:
 		Id: 50
 		Images: s38.tem
@@ -667,9 +788,13 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 256
 			1: Rock
+				Facing: 256
 			2: Rock
+				Facing: 256
 			3: Rock
+				Facing: 256
 	Template@51:
 		Id: 51
 		Images: sh32.tem
@@ -1762,7 +1887,9 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 128
 			1: Rock
+				Facing: 128
 	Template@190:
 		Id: 190
 		Images: cliffsl2.tem
@@ -1770,7 +1897,9 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 0
 			1: Rock
+				Facing: 0
 	Template@191:
 		Id: 191
 		Images: cliffsl3.tem
@@ -1778,7 +1907,9 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 196
 			1: Rock
+				Facing: 169
 	Template@192:
 		Id: 192
 		Images: cliffsl4.tem
@@ -1786,4 +1917,6 @@ Templates:
 		Categories: Cliffs
 		Tiles:
 			0: Rock
+				Facing: 64
 			1: Rock
+				Facing: 64
