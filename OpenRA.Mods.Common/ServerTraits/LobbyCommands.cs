@@ -35,6 +35,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "slot_open", SlotOpen },
 			{ "slot_bot", SlotBot },
 			{ "map", Map },
+			{ "stats", Stats },
 			{ "option", Option },
 			{ "assignteams", AssignTeams },
 			{ "kick", Kick },
@@ -475,6 +476,27 @@ namespace OpenRA.Mods.Common.Server
 			}
 			else
 				queryFailed();
+
+			return true;
+		}
+
+		static bool Stats(S server, Connection conn, Session.Client client, string s)
+		{
+			if (!client.IsAdmin)
+			{
+				server.SendOrderTo(conn, "Message", "Only the host can change the stats.");
+				return true;
+			}
+
+			server.LobbyInfo.GlobalSettings.Stats = s;
+			server.Stats = server.LobbyInfo.GlobalSettings.Stats == "" ? null : OpenRA.Stats.Deserialize(server.LobbyInfo.GlobalSettings.Stats);
+
+			server.SyncLobbyInfo();
+
+			if (server.Stats == null)
+				server.SendMessage("{0} changed the stats to default.".F(client.Name));
+			else
+				server.SendMessage("{0} changed the stats to {1} {2} by {3}.".F(client.Name, server.Stats.Name, server.Stats.Version, server.Stats.Author));
 
 			return true;
 		}

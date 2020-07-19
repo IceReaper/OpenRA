@@ -152,6 +152,12 @@ namespace OpenRA.GameRules
 			{
 				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
 				FieldLoader.Load(ret, node.Value);
+
+				var field = ret.GetType().GetField("InstanceName");
+
+				if (field != null)
+					field.SetValue(ret, node.Key);
+
 				retList.Add(ret);
 			}
 

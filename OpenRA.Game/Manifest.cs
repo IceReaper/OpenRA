@@ -65,6 +65,7 @@ namespace OpenRA
 
 		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
+		public readonly IReadOnlyDictionary<string, string> StatsFolders;
 		public readonly MiniYaml LoadScreen;
 
 		public readonly string[] SoundFormats = { };
@@ -73,7 +74,7 @@ namespace OpenRA
 
 		readonly string[] reservedModuleNames =
 		{
-			"Metadata", "Folders", "MapFolders", "Packages", "Rules",
+			"Metadata", "Folders", "MapFolders", "StatsFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "SupportsMapsFrom", "SoundFormats", "SpriteFormats",
@@ -95,6 +96,8 @@ namespace OpenRA
 
 			// TODO: Use fieldloader
 			MapFolders = YamlDictionary(yaml, "MapFolders");
+
+			StatsFolders = YamlDictionary(yaml, "StatsFolders");
 
 			MiniYaml packages;
 			if (yaml.TryGetValue("Packages", out packages))

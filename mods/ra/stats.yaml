@@ -1,0 +1,14 @@
+Group@Infantry:
+Rifle Infantry:
+	Range:          weapons, M1Carbine, Range
+	Damage:         weapons, M1Carbine, Warhead@1Dam, Versus
+Group@Vehicles:
+MCV:
+	Cost:           rules, MCV, Valued, Cost
+	Health:         rules, MCV, Health, HP
+	Movement speed: rules, MCV, Mobile, Speed
+	View range:     rules, MCV, RevealsShroud, Range
+Group@Aircrafts:
+Group@Naval:
+Group@Buildings:
+Group@Defences:

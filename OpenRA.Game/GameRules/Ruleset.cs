@@ -179,7 +179,7 @@ namespace OpenRA
 
 		public static Ruleset Load(ModData modData, IReadOnlyFileSystem fileSystem, string tileSet,
 			MiniYaml mapRules, MiniYaml mapWeapons, MiniYaml mapVoices, MiniYaml mapNotifications,
-			MiniYaml mapMusic, MiniYaml mapSequences, MiniYaml mapModelSequences)
+			MiniYaml mapMusic, MiniYaml mapSequences, MiniYaml mapModelSequences, Stats stats = null)
 		{
 			var m = modData.Manifest;
 			var dr = modData.DefaultRules;
@@ -191,7 +191,16 @@ namespace OpenRA
 					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
 					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
 
+				if (stats != null)
+					actors = MergeOrDefault("Rules", fileSystem, m.Rules, stats.Rules, actors,
+						k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
+						filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
+
 				var weapons = MergeOrDefault("Weapons", fileSystem, m.Weapons, mapWeapons, dr.Weapons,
+					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
+
+				if (stats != null)
+					weapons = MergeOrDefault("Weapons", fileSystem, m.Weapons, stats.Weapons, weapons,
 					k => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
 
 				var voices = MergeOrDefault("Voices", fileSystem, m.Voices, mapVoices, dr.Voices,

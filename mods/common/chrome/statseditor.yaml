@@ -1,0 +1,239 @@
+Background@STATS_EDITOR_PANEL:
+	Logic: StatsEditorLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM -  HEIGHT) / 2
+	Width: 800
+	Height: 600
+	Children:
+		Container@OVERVIEW:
+			X: 0
+			Y: 0
+			Width: 800
+			Height: 600
+			Visible: false
+			Children:
+				Button@NEW:
+					X: 20
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: New
+					Font: Bold
+				Button@EDIT:
+					X: 215
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: Edit
+					Font: Bold
+				Button@DELETE:
+					X: 410
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: Delete
+					Font: Bold
+				Button@EXIT_BUTTON:
+					X: 605
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: Exit
+					Font: Bold
+				ScrollPanel@STATS_LIST:
+					X: 20
+					Y: 20
+					Width: PARENT_RIGHT - 40
+					Height: PARENT_BOTTOM - 85
+					CollapseHiddenChildren: true
+					Children:
+						ScrollItem@STATS_ITEM_TEMPLATE:
+							X: 2
+							Y: 0
+							Width: PARENT_RIGHT - 27
+							Height: 25
+							Visible: false
+							Children:
+								Label@LABEL:
+									X: 10
+									Y: 0
+									Width: PARENT_RIGHT - 20
+									Height: 25
+									Text: Exit
+		Container@EDITOR:
+			X: 0
+			Y: 0
+			Width: 800
+			Height: 600
+			Visible: false
+			Children:
+				Button@SAVE:
+					X: 20
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: Save
+					Font: Bold
+				Button@BACK:
+					X: 605
+					Y: PARENT_BOTTOM - HEIGHT - 20
+					Width: 175
+					Height: 25
+					Text: Back
+					Font: Bold
+				Label@NAME_LABEL:
+					X: 20
+					Y: 20
+					Width: 90
+					Height: 25
+					Text: Name:
+				TextField@NAME_FIELD:
+					X: 110
+					Y: 20
+					Width: PARENT_RIGHT - 390
+					Height: 25
+				Label@VERSION_LABEL:
+					X: PARENT_RIGHT - 260
+					Y: 20
+					Width: 45
+					Height: 25
+					Text: Version:
+				TextField@VERSION_FIELD:
+					X: PARENT_RIGHT - 195
+					Y: 20
+					Width: 175
+					Height: 25
+				Label@DESCRIPTION_LABEL:
+					X: 20
+					Y: 55
+					Width: 90
+					Height: 25
+					Text: Description:
+				TextField@DESCRIPTION_FIELD:
+					X: 110
+					Y: 55
+					Width: PARENT_RIGHT - 390
+					Height: 25
+				Label@AUTHOR_LABEL:
+					X: PARENT_RIGHT - 260
+					Y: 55
+					Width: 45
+					Height: 25
+					Text: Author:
+				TextField@AUTHOR_FIELD:
+					X: PARENT_RIGHT - 195
+					Y: 55
+					Width: 175
+					Height: 25
+				ScrollPanel@ACTORS_LIST:
+					X: 20
+					Y: 100
+					Width: 200
+					Height: PARENT_BOTTOM - 165
+					CollapseHiddenChildren: true
+					Children:
+						Label@ACTORS_GROUP_TEMPLATE:
+							X: 22
+							Y: 0
+							Width: PARENT_RIGHT - 67
+							Height: 25
+							Visible: false
+							Font: Bold
+							Align: Center
+						ScrollItem@ACTORS_ITEM_TEMPLATE:
+							X: 2
+							Y: 0
+							Width: PARENT_RIGHT - 27
+							Height: 25
+							Visible: false
+							Children:
+								Label@LABEL:
+									X: 10
+									Y: 0
+									Width: PARENT_RIGHT - 20
+									Height: 25
+				ScrollPanel@PROPERTIES_LIST:
+					X: 240
+					Y: 100
+					Width: PARENT_RIGHT - 260
+					Height: PARENT_BOTTOM - 165
+					CollapseHiddenChildren: true
+					Children:
+						Label@PROPERTIES_GROUP_TEMPLATE:
+							X: 22
+							Y: 0
+							Width: PARENT_RIGHT - 67
+							Height: 25
+							Visible: false
+							Font: Bold
+							Align: Center
+						Container@PROPERTIES_ITEM_TEMPLATE:
+							X: 2
+							Y: 0
+							Width: PARENT_RIGHT - 27
+							Height: 30
+							Visible: false
+							Children:
+								Label@LABEL:
+									X: 10
+									Y: 5
+									Width: 150
+									Height: 20
+								TextField@VALUE:
+									X: PARENT_RIGHT - 250
+									Y: 5
+									Width: 210
+									Height: 20
+								Button@DEFAULT:
+									X: PARENT_RIGHT - 30
+									Y: 5
+									Width: 20
+									Height: 20
+									Text: O
+						Container@PROPERTIES_DICTIONARY_TEMPLATE:
+							X: 2
+							Y: 0
+							Width: PARENT_RIGHT - 27
+							Height: 30
+							Visible: false
+							Children:
+								Label@LABEL:
+									X: 10
+									Y: 5
+									Width: 150
+									Height: 20
+								Button@ADD:
+									X: PARENT_RIGHT - 60
+									Y: PARENT_BOTTOM - 25
+									Width: 20
+									Height: 20
+									Text: +
+								Button@DEFAULT:
+									X: PARENT_RIGHT - 30
+									Y: PARENT_BOTTOM - 25
+									Width: 20
+									Height: 20
+									Text: O
+								Container@PROPERTIES_DICTIONARY_ITEM_TEMPLATE:
+									X: 0
+									Y: 0
+									Width: PARENT_RIGHT
+									Height: 30
+									Visible: false
+									Children:
+										TextField@KEY:
+											X: PARENT_RIGHT - 250
+											Y: 5
+											Width: 100
+											Height: 20
+										TextField@VALUE:
+											X: PARENT_RIGHT - 140
+											Y: 5
+											Width: 100
+											Height: 20
+										Button@REMOVE:
+											X: PARENT_RIGHT - 30
+											Y: 5
+											Width: 20
+											Height: 20
+											Text: -

@@ -175,7 +175,7 @@ namespace OpenRA
 			FieldLoader.SetTranslations(translations);
 		}
 
-		public Map PrepareMap(string uid)
+		public Map PrepareMap(string uid, string stats)
 		{
 			if (LoadScreen != null)
 				LoadScreen.Display();
@@ -185,7 +185,7 @@ namespace OpenRA
 
 			Map map;
 			using (new Support.PerfTimer("Map"))
-				map = new Map(this, MapCache[uid].Package);
+				map = new Map(this, MapCache[uid].Package, string.IsNullOrEmpty(stats) ? null : Stats.Deserialize(stats));
 
 			LoadTranslations(map);
 

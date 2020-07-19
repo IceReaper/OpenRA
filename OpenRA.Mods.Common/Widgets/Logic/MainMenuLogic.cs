@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic : ChromeLogic
 	{
-		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
+		protected enum MenuType { Main, Singleplayer, Extras, Editors, MapEditor, StartupPrompts, None }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			};
 
-			extrasMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => SwitchMenu(MenuType.MapEditor);
+			extrasMenu.Get<ButtonWidget>("EDITORS_BUTTON").OnClick = () => SwitchMenu(MenuType.Editors);
 
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");
 			if (assetBrowserButton != null)
@@ -153,6 +153,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			extrasMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Main);
+
+			// Editors menu
+			var editorsMenu = widget.Get("EDITORS_MENU");
+			editorsMenu.IsVisible = () => menuType == MenuType.Editors;
+
+			editorsMenu.Get<ButtonWidget>("MAP_EDITOR_BUTTON").OnClick = () => SwitchMenu(MenuType.MapEditor);
+
+			editorsMenu.Get<ButtonWidget>("STATS_EDITOR_BUTTON").OnClick = () =>
+			{
+				SwitchMenu(MenuType.None);
+				Game.OpenWindow("STATS_EDITOR_PANEL", new WidgetArgs
+				{
+					{ "onExit", () => SwitchMenu(MenuType.Editors) }
+				});
+			};
+
+			editorsMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
 
 			// Map editor menu
 			var mapEditorMenu = widget.Get("MAP_EDITOR_MENU");
@@ -190,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			loadMapButton.Disabled = !hasMaps;
 
-			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Extras);
+			mapEditorMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => SwitchMenu(MenuType.Editors);
 
 			var newsBG = widget.GetOrNull("NEWS_BG");
 			if (newsBG != null)

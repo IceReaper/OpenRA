@@ -53,6 +53,10 @@ MapFolders:
 	ts|maps: System
 	~^maps/ts/{DEV_VERSION}: User
 
+StatsFolders:
+	ts|stats: System
+	~^stats/ts/{DEV_VERSION}: User
+
 Rules:
 	ts|rules/ai.yaml
 	ts|rules/misc.yaml
@@ -173,6 +177,7 @@ ChromeLayout:
 	common|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml
+	common|chrome/statseditor.yaml
 
 Voices:
 	ts|audio/voices.yaml

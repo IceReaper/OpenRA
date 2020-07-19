@@ -65,6 +65,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
+		DropDownButtonWidget statsButton;
+		TextFieldWidget statsDescription;
+		string defaultStatsName;
+		string defaultStatsDescription;
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -118,6 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.LobbyInfoChanged += UpdateDiscordStatus;
+			Game.LobbyInfoChanged += UpdateStats;
 			Game.BeforeGameStart += OnGameStart;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
@@ -289,6 +295,48 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					};
 					slotsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, setupItem);
+				};
+			}
+
+			statsButton = lobby.GetOrNull<DropDownButtonWidget>("STATS_DROPDOWNBUTTON");
+			if (statsButton != null)
+			{
+				defaultStatsName = statsButton.Text;
+				statsDescription = lobby.GetOrNull<TextFieldWidget>("STATS_DESCRIPTION");
+				defaultStatsDescription = statsDescription == null ? "" : statsDescription.Text;
+
+				statsButton.IsDisabled = () => configurationDisabled();
+
+				statsButton.OnMouseDown = _ =>
+				{
+					var options = new List<DropDownOption>();
+
+					options.Add(new DropDownOption
+					{
+						Title = defaultStatsName,
+						IsSelected = () => false,
+						OnClick = () => orderManager.IssueOrder(Order.Command("stats "))
+					});
+
+					foreach (var stats in Stats.AvailableStats())
+					{
+						var localStats = stats;
+						options.Add(new DropDownOption
+						{
+							Title = stats.Name,
+							IsSelected = () => false,
+							OnClick = () => orderManager.IssueOrder(Order.Command("stats " + localStats.Serialize()))
+						});
+					}
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					statsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, setupItem);
 				};
 			}
 
@@ -551,6 +599,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				LoadMapPreviewRules(map);
 			else if (Game.Settings.Game.AllowDownloading)
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { uid }, LoadMapPreviewRules);
+		}
+
+		void UpdateStats()
+		{
+			if (statsButton == null)
+				return;
+
+			var statsYaml = orderManager.LobbyInfo.GlobalSettings.Stats;
+			if (string.IsNullOrEmpty(statsYaml))
+			{
+				statsButton.Text = defaultStatsName;
+				if (statsDescription != null)
+					statsDescription.Text = defaultStatsDescription;
+			}
+			else
+			{
+				var stats = Stats.Deserialize(statsYaml);
+				statsButton.Text = stats.Name;
+				if (statsDescription != null)
+					statsDescription.Text = stats.Description;
+			}
 		}
 
 		void UpdatePlayerList()

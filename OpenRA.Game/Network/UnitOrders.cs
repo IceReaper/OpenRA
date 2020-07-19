@@ -138,7 +138,7 @@ namespace OpenRA.Network
 						else
 							Game.AddSystemLine("The game has started.");
 
-						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
+						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular, orderManager.LobbyInfo.GlobalSettings.Stats);
 						break;
 					}
 

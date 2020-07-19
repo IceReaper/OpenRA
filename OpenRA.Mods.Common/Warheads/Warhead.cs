@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Warheads
 	[Desc("Base warhead class. This can be used to derive other warheads from.")]
 	public abstract class Warhead : IWarhead
 	{
+		// Value is set using reflection during Warhead creation
+		public readonly string InstanceName = null;
+
 		[Desc("What types of targets are affected.")]
 		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
 

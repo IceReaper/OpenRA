@@ -215,6 +215,7 @@ namespace OpenRA.Network
 		{
 			public string ServerName;
 			public string Map;
+			public string Stats;
 			public int Timestep = 40;
 			public int OrderLatency = 3; // net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
@@ -232,6 +233,10 @@ namespace OpenRA.Network
 			{
 				var gs = FieldLoader.Load<Global>(data);
 
+				// Hack to get sub-yaml around serialization issue.
+				if (!string.IsNullOrEmpty(gs.Stats))
+					gs.Stats = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(gs.Stats));
+
 				var optionsNode = data.Nodes.FirstOrDefault(n => n.Key == "Options");
 				if (optionsNode != null)
 					foreach (var n in optionsNode.Value.Nodes)
@@ -243,6 +248,12 @@ namespace OpenRA.Network
 			public MiniYamlNode Serialize()
 			{
 				var data = new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
+
+				// Hack to get sub-yaml around serialization issue.
+				var statsNode = data.Value.Nodes.First(node => node.Key == "Stats");
+				if (!string.IsNullOrEmpty(statsNode.Value.Value))
+					statsNode.Value.Value = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(statsNode.Value.Value));
+
 				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value))).ToList();
 				data.Value.Nodes.Add(new MiniYamlNode("Options", new MiniYaml(null, options)));
 				return data;

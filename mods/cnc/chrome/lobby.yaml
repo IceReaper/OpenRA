@@ -87,11 +87,32 @@ Container@SERVER_LOBBY:
 					Y: 30
 					Width: 582
 					Height: 219
-				Container@LOBBYCHAT:
+				Container@STATS:
 					X: 15
 					Y: 285
 					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 300
+					Height: 25
+					Children:
+						DropDownButton@STATS_DROPDOWNBUTTON:
+							X: 0
+							Y: 0
+							Width: 230
+							Height: 25
+							Font: Bold
+							Text: Default stats
+						TextField@STATS_DESCRIPTION:
+							X: 235
+							Y: 0
+							Disabled: true
+							Width: PARENT_RIGHT - 235
+							Height: 25
+							Font: Bold
+							Text: Using default mod stats.
+				Container@LOBBYCHAT:
+					X: 15
+					Y: 316
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 331
 					Children:
 						ScrollPanel@CHAT_DISPLAY:
 							Width: PARENT_RIGHT

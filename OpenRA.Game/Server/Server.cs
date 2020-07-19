@@ -59,6 +59,7 @@ namespace OpenRA.Server
 		// Managed by LobbyCommands
 		public MapPreview Map;
 		public GameSave GameSave = null;
+		public Stats Stats;
 
 		readonly int randomSeed;
 		readonly List<TcpListener> listeners = new List<TcpListener>();
@@ -191,6 +192,7 @@ namespace OpenRA.Server
 				{
 					RandomSeed = randomSeed,
 					Map = settings.Map,
+					Stats = settings.Stats,
 					ServerName = settings.Name,
 					EnableSingleplayer = settings.EnableSingleplayer || Type != ServerType.Dedicated,
 					EnableSyncReports = settings.EnableSyncReports,

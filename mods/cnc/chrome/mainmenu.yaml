@@ -127,7 +127,7 @@ Container@MENU_BACKGROUND:
 							Text: Load
 						Button@BACK_BUTTON:
 							Key: escape
-							X: 450
+							X: 750
 							Y: 0
 							Width: 140
 							Height: 35
@@ -157,12 +157,12 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Music
-						Button@MAP_EDITOR_BUTTON:
+						Button@EDITORS_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: Map Editor
+							Text: Editors
 							Font: Bold
 						Button@ASSETBROWSER_BUTTON:
 							X: 450
@@ -183,6 +183,41 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: Back
+				Container@EDITORS_MENU:
+					Width: PARENT_RIGHT
+					Visible: False
+					Children:
+						Label@EDITORS_MENU_TITLE:
+							X: 0
+							Y: 0 - 30
+							Width: PARENT_RIGHT
+							Height: 20
+							Text: Editors
+							Align: Center
+							Font: Bold
+							Contrast: True
+						Button@MAP_EDITOR_BUTTON:
+							X: 0
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Map Editor
+							Font: Bold
+						Button@STATS_EDITOR_BUTTON:
+							X: 150
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Stats Editor
+							Font: Bold
+						Button@BACK_BUTTON:
+							X: 750
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: Back
+							Font: Bold
+							Key: escape
 				Container@MAP_EDITOR_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
@@ -211,7 +246,7 @@ Container@MENU_BACKGROUND:
 							Text: Load Map
 							Font: Bold
 						Button@BACK_BUTTON:
-							X: 300
+							X: 750
 							Y: 0
 							Width: 140
 							Height: 35

@@ -1,0 +1,9 @@
+Meta:
+	Name: Fast MCV
+	Version: 1.0
+	Author: IceReaper
+	Description: Makes MCVs extremely fast.
+
+Stats:
+	MCV:
+		Movement speed: 500

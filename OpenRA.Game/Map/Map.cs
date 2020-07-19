@@ -239,6 +239,7 @@ namespace OpenRA
 
 		// Internal data
 		readonly ModData modData;
+		readonly Stats stats;
 		CellLayer<short> cachedTerrainIndexes;
 		bool initializedCellProjection;
 		CellLayer<PPos[]> cellProjection;
@@ -315,9 +316,10 @@ namespace OpenRA
 			PostInit();
 		}
 
-		public Map(ModData modData, IReadOnlyPackage package)
+		public Map(ModData modData, IReadOnlyPackage package, Stats stats = null)
 		{
 			this.modData = modData;
+			this.stats = stats;
 			Package = package;
 
 			if (!Package.Contains("map.yaml") || !Package.Contains("map.bin"))
@@ -403,7 +405,7 @@ namespace OpenRA
 			try
 			{
 				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions, stats);
 			}
 			catch (Exception e)
 			{

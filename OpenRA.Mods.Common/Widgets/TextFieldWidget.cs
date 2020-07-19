@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum TextFieldType { General, Filename, Integer }
+	public enum TextFieldType { General, Filename, Integer, Custom }
 	public class TextFieldWidget : Widget
 	{
 		string text = "";
@@ -35,6 +35,8 @@ namespace OpenRA.Mods.Common.Widgets
 				ClearSelection();
 			}
 		}
+
+		public string Placeholder = "";
 
 		public int MaxLength = 0;
 		public int VisualHeight = 1;
@@ -60,6 +62,8 @@ namespace OpenRA.Mods.Common.Widgets
 				CursorPosition = CursorPosition.Clamp(0, text.Length);
 			}
 		}
+
+		public Func<string, string> Sanitize;
 
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
@@ -90,10 +94,12 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(widget)
 		{
 			Text = widget.Text;
+			Placeholder = widget.Placeholder;
 			MaxLength = widget.MaxLength;
 			LeftMargin = widget.LeftMargin;
 			RightMargin = widget.RightMargin;
 			Type = widget.Type;
+			Sanitize = widget.Sanitize;
 			Font = widget.Font;
 			TextColor = widget.TextColor;
 			TextColorDisabled = widget.TextColorDisabled;
@@ -211,6 +217,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				case TextFieldType.Integer:
 					return new string(input.Where(c => char.IsDigit(c)).ToArray());
+
+				case TextFieldType.Custom:
+					return Sanitize(input);
 
 				default:
 					return input;
@@ -604,6 +613,9 @@ namespace OpenRA.Mods.Common.Widgets
 				: IsValid() ? TextColor
 				: TextColorInvalid;
 			font.DrawText(apparentText, textPos, color);
+
+			if (text == "" && Placeholder != "")
+				font.DrawText(Placeholder, pos + new int2(LeftMargin, verticalMargin), TextColorDisabled);
 
 			if (showCursor && HasKeyboardFocus)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), TextColor);

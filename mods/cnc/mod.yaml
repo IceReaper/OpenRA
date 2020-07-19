@@ -36,6 +36,10 @@ MapFolders:
 	cnc|maps: System
 	~^maps/cnc/{DEV_VERSION}: User
 
+StatsFolders:
+	cnc|stats: System
+	~^stats/cnc/{DEV_VERSION}: User
+
 Rules:
 	cnc|rules/misc.yaml
 	cnc|rules/ai.yaml
@@ -130,6 +134,7 @@ ChromeLayout:
 	cnc|chrome/assetbrowser.yaml
 	cnc|chrome/missionbrowser.yaml
 	cnc|chrome/editor.yaml
+	common|chrome/statseditor.yaml
 
 Voices:
 	cnc|audio/voices.yaml
