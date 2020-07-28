@@ -384,6 +384,7 @@ MCV:
 		Actor: MCV.Husk
 	TransferTimedExternalConditionOnTransform:
 		Condition: invulnerability
+	WithCubeModel:
 
 JEEP:
 	Inherits: ^Vehicle
