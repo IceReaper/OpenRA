@@ -52,6 +52,7 @@ namespace OpenRA
 
 		public static Renderer Renderer;
 		public static Sound Sound;
+		public static IEcosystem EcoSystem;
 
 		public static string EngineVersion { get; private set; }
 		public static LocalPlayerProfile LocalPlayerProfile;
@@ -346,6 +347,7 @@ namespace OpenRA
 					var platform = (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
 					Renderer = new Renderer(platform, Settings.Graphics);
 					Sound = new Sound(platform, Settings.Sound);
+					EcoSystem = platform.CreateEcosystem();
 
 					break;
 				}
@@ -354,8 +356,8 @@ namespace OpenRA
 					Log.Write("graphics", "{0}", e);
 					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
 
+					EcoSystem?.Dispose();
 					Renderer?.Dispose();
-
 					Sound?.Dispose();
 				}
 			}
@@ -875,6 +877,7 @@ namespace OpenRA
 
 			Sound.Dispose();
 			Renderer.Dispose();
+			EcoSystem?.Dispose();
 
 			OnQuit();
 

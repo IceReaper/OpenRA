@@ -197,13 +197,16 @@ namespace OpenRA.Network
 							break;
 						}
 
-						Game.Settings.Player.Name = Settings.SanitizedPlayerName(Game.Settings.Player.Name);
-						Game.Settings.Save();
+						if (Game.EcoSystem.AllowPlayerNameChange)
+						{
+							Game.EcoSystem.PlayerName = Settings.SanitizedPlayerName(Game.EcoSystem.PlayerName);
+							Game.Settings.Save();
+						}
 
 						// Otherwise send the handshake with our current settings and let the server reject us
 						var info = new Session.Client()
 						{
-							Name = Game.Settings.Player.Name,
+							Name = Game.EcoSystem.PlayerName,
 							PreferredColor = Game.Settings.Player.Color,
 							Color = Game.Settings.Player.Color,
 							Faction = "Random",

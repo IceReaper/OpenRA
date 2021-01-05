@@ -31,6 +31,7 @@
     <PackageReference Include="OpenRA-Freetype6" Version="1.0.4" />
     <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.16" />
     <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.28" />
+    <PackageReference Include="Facepunch.Steamworks" Version="2.3.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <AdditionalFiles Include="../stylecop.json" />

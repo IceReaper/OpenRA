@@ -367,7 +367,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var name = parent.Get<TextFieldWidget>("NAME");
 			name.IsVisible = () => true;
-			name.IsDisabled = () => orderManager.LocalClient.IsReady;
+			name.IsDisabled = () => orderManager.LocalClient.IsReady || !Game.EcoSystem.AllowPlayerNameChange;
 
 			name.Text = c.Name;
 			var escPressed = false;
@@ -386,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					name.Text = Settings.SanitizedPlayerName(name.Text);
 					orderManager.IssueOrder(Order.Command("name " + name.Text));
-					Game.Settings.Player.Name = name.Text;
+					Game.EcoSystem.PlayerName = name.Text;
 					Game.Settings.Save();
 				}
 			};

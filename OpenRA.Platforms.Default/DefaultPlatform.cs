@@ -38,5 +38,20 @@ namespace OpenRA.Platforms.Default
 		{
 			return new FreeTypeFont(data);
 		}
+
+		public IEcosystem CreateEcosystem()
+		{
+			try
+			{
+				var ecosystem = new SteamEcosystem();
+				Console.WriteLine("Ecosystem is Steam");
+				return ecosystem;
+			}
+			catch (Exception)
+			{
+				Console.WriteLine("Ecosystem is default");
+				return new DefaultEcosystem();
+			}
+		}
 	}
 }

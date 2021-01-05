@@ -325,8 +325,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var escPressed = false;
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
-			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
-			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap || !Game.EcoSystem.AllowPlayerNameChange;
+			nameTextfield.Text = Game.EcoSystem.PlayerName;
 			nameTextfield.OnLoseFocus = () =>
 			{
 				if (escPressed)
@@ -337,18 +337,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				nameTextfield.Text = nameTextfield.Text.Trim();
 				if (nameTextfield.Text.Length == 0)
-					nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+					nameTextfield.Text = Game.EcoSystem.PlayerName;
 				else
 				{
 					nameTextfield.Text = Settings.SanitizedPlayerName(nameTextfield.Text);
-					ps.Name = nameTextfield.Text;
+					Game.EcoSystem.PlayerName = nameTextfield.Text;
 				}
 			};
 
 			nameTextfield.OnEnterKey = () => { nameTextfield.YieldKeyboardFocus(); return true; };
 			nameTextfield.OnEscKey = () =>
 			{
-				nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+				nameTextfield.Text = Game.EcoSystem.PlayerName;
 				escPressed = true;
 				nameTextfield.YieldKeyboardFocus();
 				return true;
@@ -398,7 +398,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				ps.Color = dps.Color;
-				ps.Name = dps.Name;
 			};
 		}
 

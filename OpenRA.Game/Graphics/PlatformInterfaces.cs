@@ -29,6 +29,7 @@ namespace OpenRA
 		IPlatformWindow CreateWindow(Size size, WindowMode windowMode, float scaleModifier, int batchSize, int videoDisplay, GLProfile profile, bool enableLegacyGL);
 		ISoundEngine CreateSound(string device);
 		IFont CreateFont(byte[] data);
+		IEcosystem CreateEcosystem();
 	}
 
 	public interface IHardwareCursor : IDisposable { }
@@ -45,6 +46,12 @@ namespace OpenRA
 		LowAdditive,
 		Screen,
 		Translucent
+	}
+
+	public interface IEcosystem : IDisposable
+	{
+		bool AllowPlayerNameChange { get; }
+		string PlayerName { get; set; }
 	}
 
 	public interface IPlatformWindow : IDisposable

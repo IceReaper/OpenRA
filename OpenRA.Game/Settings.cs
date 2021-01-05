@@ -210,8 +210,6 @@ namespace OpenRA
 
 	public class PlayerSettings
 	{
-		[Desc("Sets the player nickname.")]
-		public string Name = "Commander";
 		public Color Color = Color.FromArgb(200, 32, 32);
 		public string LastServer = "localhost:1234";
 		public Color[] CustomColors = { };
@@ -403,7 +401,7 @@ namespace OpenRA
 			var clean = SanitizedName(dirty);
 
 			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
-				clean = new PlayerSettings().Name;
+				clean = "Commander";
 
 			// avoid UI glitches
 			if (clean.Length > 16)
