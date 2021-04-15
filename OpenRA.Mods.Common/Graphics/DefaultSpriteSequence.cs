@@ -135,6 +135,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public int Length { get; private set; }
 		public int Stride { get; private set; }
 		public int Facings { get; private set; }
+		public int FacingsShift { get; private set; }
 		public int Tick { get; private set; }
 		public int ZOffset { get; private set; }
 		public float ZRamp { get; private set; }
@@ -194,6 +195,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var flipY = LoadField(d, "FlipY", false);
 
 				Facings = LoadField(d, "Facings", 1);
+				FacingsShift = LoadField(d, "FacingsShift", 0);
 				if (Facings < 0)
 				{
 					reverseFacings = true;
@@ -252,10 +254,12 @@ namespace OpenRA.Mods.Common.Graphics
 					var usedFrames = new List<int>();
 					for (var facing = 0; facing < Facings; facing++)
 					{
+						var facingShifted = (facing + FacingsShift) % Facings;
+
 						for (var frame = 0; frame < Length; frame++)
 						{
-							var i = transpose ? (frame % Length) * Facings + facing :
-								(facing * Stride) + (frame % Length);
+							var i = transpose ? (frame % Length) * Facings + facingShifted :
+								(facingShifted * Stride) + (frame % Length);
 
 							usedFrames.Add(Frames != null ? Frames[i] : Start + i);
 						}
