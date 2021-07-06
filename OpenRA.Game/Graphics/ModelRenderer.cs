@@ -44,7 +44,6 @@ namespace OpenRA.Graphics
 		static readonly float[] ShadowScaleFlipMtx = Util.ScaleMatrix(2, -2, 2);
 
 		readonly Renderer renderer;
-		readonly IShader shader;
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
@@ -52,30 +51,29 @@ namespace OpenRA.Graphics
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
+		ITexture palette;
+		float[] view;
 
-		public ModelRenderer(Renderer renderer, IShader shader)
+		public ModelRenderer(Renderer renderer)
 		{
 			this.renderer = renderer;
-			this.shader = shader;
 		}
 
 		public void SetPalette(ITexture palette)
 		{
-			shader.SetTexture("Palette", palette);
+			this.palette = palette;
 		}
 
 		public void SetViewportParams(Size screen, int2 scroll)
 		{
 			var a = 2f / renderer.SheetSize;
-			var view = new[]
+			view = new[]
 			{
 				a, 0, 0, 0,
 				0, -a, 0, 0,
 				0, 0, -2 * a, 0,
 				-1, 1, 0, 1
 			};
-
-			shader.SetMatrix("View", view);
 		}
 
 		public ModelRenderProxy RenderAsync(
@@ -201,8 +199,12 @@ namespace OpenRA.Graphics
 					var frame = m.FrameFunc();
 					for (uint i = 0; i < m.Model.Sections; i++)
 					{
-						var rd = m.Model.RenderData(i);
+						var rd = m.Model.RenderData(i, frame);
 						var t = m.Model.TransformationMatrix(i, frame);
+
+						if (m.TransformFunc != null)
+							t = Util.MatrixMultiply(m.TransformFunc(), t);
+
 						var it = Util.MatrixInverse(t);
 						if (it == null)
 							throw new InvalidOperationException($"Failed to invert the transformed matrix of frame {i} during RenderAsync.");
@@ -210,12 +212,12 @@ namespace OpenRA.Graphics
 						// Transform light vector from shadow -> world -> limb coords
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
-						Render(rd, wr.World.ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
-							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
+						Render(rd, Util.MatrixMultiply(transform, t), lightDirection,
+							lightAmbientColor, lightDiffuseColor, color?.TextureMidIndex ?? 0, normals?.TextureMidIndex ?? 0);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, wr.World.ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
+							Render(rd, Util.MatrixMultiply(shadow, t), lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
@@ -261,20 +263,29 @@ namespace OpenRA.Graphics
 
 		void Render(
 			ModelRenderData renderData,
-			IModelCache cache,
 			float[] t, float[] lightDirection,
 			float[] ambientLight, float[] diffuseLight,
 			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
 		{
-			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
-			shader.SetMatrix("TransformMatrix", t);
-			shader.SetVec("LightDirection", lightDirection, 4);
-			shader.SetVec("AmbientLight", ambientLight, 3);
-			shader.SetVec("DiffuseLight", diffuseLight, 3);
+			var currentShader = renderData.Shader;
 
-			shader.PrepareRender();
-			renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
+			// Future notice: using ARB_Uniform_Buffer_Object makes all the gl calls obsolete.
+			currentShader.SetTexture("Palette", palette);
+
+			if (view != null)
+				currentShader.SetMatrix("View", view);
+
+			currentShader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
+			currentShader.SetMatrix("TransformMatrix", t);
+			currentShader.SetVec("LightDirection", lightDirection, 4);
+			currentShader.SetVec("AmbientLight", ambientLight, 3);
+			currentShader.SetVec("DiffuseLight", diffuseLight, 3);
+
+			currentShader.SetRenderData(renderData);
+
+			currentShader.PrepareRender();
+
+			renderer.DrawBatch(currentShader, renderData.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()
