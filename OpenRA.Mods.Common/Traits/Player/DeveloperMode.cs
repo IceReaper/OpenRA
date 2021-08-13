@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the developer mode checkbox in the lobby.")]
 		public readonly int CheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Debug Menu checkbox' in the lobby.")]
+		public readonly string CheckboxCategory = null;
+
 		[Desc("Default cash bonus granted by the give cash cheat.")]
 		public readonly int Cash = 20000;
 
@@ -64,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
+			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked, CheckboxCategory);
 		}
 
 		public override object Create(ActorInitializer init) { return new DeveloperMode(this); }

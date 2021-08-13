@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -23,6 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
+		readonly Widget headlineTemplate;
 		readonly Widget checkboxRowTemplate;
 		readonly Widget dropdownRowTemplate;
 		readonly int yMargin;
@@ -46,6 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
 			yMargin = optionsContainer.Bounds.Y;
+			headlineTemplate = optionsContainer.Get("HEADLINE_TEMPLATE");
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
 
@@ -75,6 +78,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			optionsContainer.RemoveChildren();
 			optionsContainer.Bounds.Height = 0;
+
+			var categories = mapPreview.WorldActorInfo.TraitInfos<LobbyOptionCategoryInfo>()
+				.OrderBy(o => o.DisplayOrder)
+				.ToArray();
+
 			var allOptions = mapPreview.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 					.Concat(mapPreview.WorldActorInfo.TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(mapPreview))
@@ -82,11 +90,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.OrderBy(o => o.DisplayOrder)
 					.ToArray();
 
+			RebuildCategory(allOptions.Where(o => o.Category == null || categories.All(c => c.Category != o.Category)).ToArray());
+
+			foreach (var category in categories)
+			{
+				var headline = (LabelWidget)headlineTemplate.Clone();
+				headline.GetText = () => category.Title;
+				headline.Bounds.Y = optionsContainer.Bounds.Height;
+
+				optionsContainer.Bounds.Height += headline.Bounds.Height;
+				optionsContainer.AddChild(headline);
+
+				RebuildCategory(allOptions.Where(o => o.Category == category.Category).ToArray());
+			}
+
+			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Y = yMargin;
+
+			if (panel.ContentHeight < panel.Bounds.Height)
+				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
+
+			panel.ScrollToTop();
+		}
+
+		void RebuildCategory(IEnumerable<LobbyOption> options)
+		{
 			Widget row = null;
 			var checkboxColumns = new Queue<CheckboxWidget>();
 			var dropdownColumns = new Queue<DropDownButtonWidget>();
 
-			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
+			foreach (var option in options.Where(o => o is LobbyBooleanOption))
 			{
 				if (checkboxColumns.Count == 0)
 				{
@@ -115,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					$"option {option.Id} {!optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled}"));
 			}
 
-			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
+			foreach (var option in options.Where(o => !(o is LobbyBooleanOption)))
 			{
 				if (dropdownColumns.Count == 0)
 				{
