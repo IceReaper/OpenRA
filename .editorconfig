@@ -1,18 +1,15 @@
-; Top-most http://editorconfig.org/ file
 root = true
-charset=utf-8
 
-; Unix-style newlines
 [*]
-end_of_line = LF
-insert_final_newline = true
-trim_trailing_whitespace = true
-
-; 4-column tab indentation
-[*.{cs,csproj,yaml,lua,sh,ps1}]
+charset = utf-8
 indent_style = tab
-indent_size = 4
+max_line_length = 160
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
 
+# OpenRA code style
+[*.cs]
 ; .NET coding conventions
 #### Code Style Rules
 #### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/
@@ -1172,3 +1169,47 @@ dotnet_diagnostic.RCS1239.severity = warning
 
 # Use element access.
 dotnet_diagnostic.RCS1246.severity = warning
+
+# TODO .NET 8 new rules
+
+dotnet_diagnostic.CA1000.severity = none # Do not declare static members on generic types 
+dotnet_diagnostic.CA1001.severity = none # Type owns disposable field(s) but is not disposable
+dotnet_diagnostic.CA1051.severity = none # Do not declare visible instance fields
+dotnet_diagnostic.CA1305.severity = none # The behavior of 'StringBuilder.Append(ref StringBuilder.AppendInterpolatedStringHandler)' could vary based on the current user's locale settings. Replace this call with a call to 'StringBuilder.Append(IFormatProvider, ref StringBuilder.AppendInterpolatedStringHandler)'
+dotnet_diagnostic.CA1309.severity = none # Use ordinal string comparison
+dotnet_diagnostic.CA1510.severity = none # Use 'ArgumentNullException.ThrowIfNull' instead of explicitly throwing a new exception instance
+dotnet_diagnostic.CA1069.severity = none # The enum member has the same constant value as member
+dotnet_diagnostic.CA1707.severity = none # Remove the underscores from member name
+dotnet_diagnostic.CA1708.severity = none # Names of 'Members' should differ by more than case
+dotnet_diagnostic.CA1710.severity = none # Rename to end in either 'Dictionary' or 'Collection'
+dotnet_diagnostic.CA1711.severity = none # Rename type name so that it does not end in
+dotnet_diagnostic.CA1715.severity = none # Prefix generic type parameter name with 'T'
+dotnet_diagnostic.CA1716.severity = none # In virtual/interface member, rename parameter sub so that it no longer conflicts with the reserved language keyword. Using a reserved keyword as the name of a parameter on a virtual/interface member makes it harder for consumers in other languages to override/implement the member
+dotnet_diagnostic.CA1720.severity = none # Identifier contains type name
+dotnet_diagnostic.CA1725.severity = none # In member, change parameter name value to item in order to match the identifier as it has been declared
+dotnet_diagnostic.CA1805.severity = none # Member is explicitly initialized to its default value
+dotnet_diagnostic.CA1806.severity = none # calls but does not explicitly check whether the conversion succeeded. Either use the return value in a conditional statement or verify that the call site expects that the out argument will be set to the default value when the conversion fails
+dotnet_diagnostic.CA1823.severity = none # Unused field
+dotnet_diagnostic.CA1859.severity = none # Change type of parameter for improved performance
+dotnet_diagnostic.CA1861.severity = none # Prefer 'static readonly' fields over constant array arguments if the called method is called repeatedly and is not mutating the passed array
+dotnet_diagnostic.CA1862.severity = none # Prefer using 'string.Equals(string, StringComparison)' to perform a case-insensitive comparison, but keep in mind that this might cause subtle changes in behavior, so make sure to conduct thorough testing after applying the suggestion, or if culturally sensitive comparison is not required, consider using 'StringComparison.OrdinalIgnoreCase'
+dotnet_diagnostic.CA2021.severity = none # Type is incompatible with type and cast attempts will throw InvalidCastException at runtime
+dotnet_diagnostic.CA2101.severity = none # Specify marshaling for P/Invoke string arguments
+dotnet_diagnostic.CA2201.severity = none # Exception type is not sufficiently specific
+dotnet_diagnostic.CA2219.severity = none # Do not raise an exception from within a finally clause
+dotnet_diagnostic.CA5350.severity = none # uses a weak cryptographic algorithm
+
+dotnet_diagnostic.CS0672.severity = none # Member overrides obsolete member. Add the Obsolete attribute
+
+dotnet_diagnostic.IDE0004.severity = none # Cast is redundant
+dotnet_diagnostic.IDE0005.severity = silent # Remove unnecessary usings/imports
+dotnet_diagnostic.IDE0028.severity = none # Collection initialization can be simplified
+dotnet_diagnostic.IDE0052.severity = none # Private member can be removed as the value assigned to it is never read
+dotnet_diagnostic.IDE0055.severity = none # Fix formatting
+dotnet_diagnostic.IDE0059.severity = none # Unnecessary assignment of a value
+dotnet_diagnostic.IDE0211.severity = none # Convert to 'Program.Main' style program
+
+dotnet_diagnostic.SYSLIB0050.severity = none # 'FormatterServices' is obsolete: 'Formatter-based serialization is obsolete and should not be used.'
+dotnet_diagnostic.SYSLIB0051.severity = none # 'Exception.GetObjectData(SerializationInfo, StreamingContext)' is obsolete: 'This API supports obsolete formatter-based serialization. It should not be called or extended by application code.'
+
+dotnet_diagnostic.SA0001.severity = none # XML comment analysis is disabled due to project configuration

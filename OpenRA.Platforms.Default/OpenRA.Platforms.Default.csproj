@@ -1,13 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
-    <PackageReference Include="OpenRA-Freetype6" Version="1.0.11" />
-    <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
-    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.40" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks> <!-- TODO remove -->
+	</PropertyGroup>
+
+	<!-- TODO remove - Make OpenRA native resolution standard conform! -->
+	<PropertyGroup>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Linux'))">linux-x64</TargetPlatform>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('OSX'))">osx-x64</TargetPlatform>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="glsl\**\*" CopyToOutputDirectory="PreserveNewest"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="OpenRA-Freetype6" Version="1.0.11"/>
+		<PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22"/>
+		<PackageReference Include="OpenRA-SDL2-CS" Version="1.0.40"/>
+	</ItemGroup>
+
 </Project>

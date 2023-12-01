@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -32,17 +33,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buffer = new byte[4 * 256];
 
-			unsafe
-			{
-				fixed (byte* cc = &buffer[0])
-				{
-					var c = (int*)cc;
-					for (var h = 0; h < 256; h++)
-					{
-						*(c + 0 * 256 + h) = Color.FromAhsv(h / 255f, 1, 1).ToArgb();
-					}
-				}
-			}
+			var writer = new BinaryWriter(new MemoryStream(buffer));
+
+			for (var h = 0; h < 256; h++)
+				writer.Write(Color.FromAhsv(h / 255f, 1, 1).ToArgb());
 
 			var rect = new Rectangle(0, 0, 256, 1);
 			hueSprite = new Sprite(hueSheet, new Rectangle(0, 0, 256, 1), TextureChannel.RGBA);

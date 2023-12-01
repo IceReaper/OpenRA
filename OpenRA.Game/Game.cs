@@ -304,16 +304,16 @@ namespace OpenRA
 			Settings = new Settings(Path.Combine(Platform.SupportDir, "settings.yaml"), args);
 		}
 
-		public static RunStatus InitializeAndRun(string[] args)
+		public static RunStatus InitializeAndRun(IPlatform platform, string[] args)
 		{
-			Initialize(new Arguments(args));
+			Initialize(platform, new Arguments(args));
 
 			// Proactively collect memory during loading to reduce peak memory.
 			GC.Collect();
 			return Run();
 		}
 
-		static void Initialize(Arguments args)
+		static void Initialize(IPlatform platform, Arguments args)
 		{
 			var engineDirArg = args.GetValue("Engine.EngineDir", null);
 			if (!string.IsNullOrEmpty(engineDirArg))
@@ -359,46 +359,8 @@ namespace OpenRA
 			Log.AddChannel("nat", "nat.log");
 			Log.AddChannel("client", "client.log");
 
-			var platforms = new[] { Settings.Game.Platform, "Default", null };
-			foreach (var p in platforms)
-			{
-				if (p == null)
-					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
-
-				Settings.Game.Platform = p;
-				try
-				{
-					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
-
-#if NET5_0_OR_GREATER
-					var loader = new AssemblyLoader(rendererPath);
-					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-
-#else
-					// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
-					var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
-					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-#endif
-
-					if (platformType == null)
-						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
-
-					var platform = (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
-					Renderer = new Renderer(platform, Settings.Graphics);
-					Sound = new Sound(platform, Settings.Sound);
-
-					break;
-				}
-				catch (Exception e)
-				{
-					Log.Write("graphics", $"{e}");
-					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
-
-					Renderer?.Dispose();
-
-					Sound?.Dispose();
-				}
-			}
+			Renderer = new Renderer(platform, Settings.Graphics);
+			Sound = new Sound(platform, Settings.Sound);
 
 			Nat.Initialize();
 

@@ -247,10 +247,16 @@ namespace OpenRA
 		{
 			get
 			{
-				// Engine directory defaults to the location of the binaries,
+				// Engine directory defaults to the working directory,
 				// unless OverrideGameDir is called during startup.
 				if (!engineDirAccessed)
-					engineDir = BinDir;
+				{
+					engineDir = Directory.GetCurrentDirectory();
+
+					// Add trailing DirectorySeparator for some buggy AppPool hosts
+					if (!engineDir.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+						engineDir += Path.DirectorySeparatorChar;
+				}
 
 				engineDirAccessed = true;
 				return engineDir;

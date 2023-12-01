@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <RootNamespace>OpenRA</RootNamespace>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(MSBuildRuntimeType)'!='Mono'">
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
-    <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Mono'">
-    <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Linguini.Bundle" Version="0.6.0" />
-    <PackageReference Include="OpenRA-Eluant" Version="1.0.22" />
-    <PackageReference Include="Mono.NAT" Version="3.0.4" />
-    <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
-  </ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+	</PropertyGroup>
+
+	<!-- TODO remove - Make OpenRA native resolution standard conform! -->
+	<PropertyGroup>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Windows'))">win-x64</TargetPlatform>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('Linux'))">linux-x64</TargetPlatform>
+		<TargetPlatform Condition="$([MSBuild]::IsOsPlatform('OSX'))">osx-x64</TargetPlatform>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Linguini.Bundle" Version="0.6.1"/>
+		<PackageReference Include="OpenRA-Eluant" Version="1.0.22"/>
+		<PackageReference Include="Mono.NAT" Version="3.0.4"/>
+		<PackageReference Include="SharpZipLib" Version="1.4.2"/>
+	</ItemGroup>
+
 </Project>

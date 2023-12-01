@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
@@ -109,57 +110,52 @@ namespace OpenRA.Graphics
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
+			var writer = new BinaryWriter(new MemoryStream(destData));
+
 			if (dest.Channel == TextureChannel.RGBA)
 			{
 				var destStride = dest.Sheet.Size.Width;
-				unsafe
+				var x = dest.Bounds.Left;
+				var y = dest.Bounds.Top;
+
+				var k = 0;
+				for (var j = 0; j < height; j++)
 				{
-					// Cast the data to an int array so we can copy the src data directly
-					fixed (byte* bd = &destData[0])
+					for (var i = 0; i < width; i++)
 					{
-						var data = (int*)bd;
-						var x = dest.Bounds.Left;
-						var y = dest.Bounds.Top;
-
-						var k = 0;
-						for (var j = 0; j < height; j++)
+						byte r, g, b, a;
+						switch (srcType)
 						{
-							for (var i = 0; i < width; i++)
+							case SpriteFrameType.Bgra32:
+							case SpriteFrameType.Bgr24:
 							{
-								byte r, g, b, a;
-								switch (srcType)
-								{
-									case SpriteFrameType.Bgra32:
-									case SpriteFrameType.Bgr24:
-									{
-										b = src[k++];
-										g = src[k++];
-										r = src[k++];
-										a = srcType == SpriteFrameType.Bgra32 ? src[k++] : (byte)255;
-										break;
-									}
-
-									case SpriteFrameType.Rgba32:
-									case SpriteFrameType.Rgb24:
-									{
-										r = src[k++];
-										g = src[k++];
-										b = src[k++];
-										a = srcType == SpriteFrameType.Rgba32 ? src[k++] : (byte)255;
-										break;
-									}
-
-									default:
-										throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
-								}
-
-								var cc = Color.FromArgb(a, r, g, b);
-								if (premultiplied)
-									data[(y + j) * destStride + x + i] = cc.ToArgb();
-								else
-									data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+								b = src[k++];
+								g = src[k++];
+								r = src[k++];
+								a = srcType == SpriteFrameType.Bgra32 ? src[k++] : (byte)255;
+								break;
 							}
+
+							case SpriteFrameType.Rgba32:
+							case SpriteFrameType.Rgb24:
+							{
+								r = src[k++];
+								g = src[k++];
+								b = src[k++];
+								a = srcType == SpriteFrameType.Rgba32 ? src[k++] : (byte)255;
+								break;
+							}
+
+							default:
+								throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
 						}
+
+						var cc = Color.FromArgb(a, r, g, b);
+						writer.BaseStream.Position = ((y + j) * destStride + x + i) * 4;
+						if (premultiplied)
+							writer.Write(cc.ToArgb());
+						else
+							writer.Write(PremultiplyAlpha(cc).ToArgb());
 					}
 				}
 			}
@@ -190,48 +186,43 @@ namespace OpenRA.Graphics
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
-			unsafe
+			var writer = new BinaryWriter(new MemoryStream(destData));
+
+			var x = dest.Bounds.Left;
+			var y = dest.Bounds.Top;
+
+			var k = 0;
+			for (var j = 0; j < height; j++)
 			{
-				// Cast the data to an int array so we can copy the src data directly
-				fixed (byte* bd = &destData[0])
+				for (var i = 0; i < width; i++)
 				{
-					var data = (int*)bd;
-					var x = dest.Bounds.Left;
-					var y = dest.Bounds.Top;
-
-					var k = 0;
-					for (var j = 0; j < height; j++)
+					Color cc;
+					switch (src.Type)
 					{
-						for (var i = 0; i < width; i++)
+						case SpriteFrameType.Indexed8:
 						{
-							Color cc;
-							switch (src.Type)
-							{
-								case SpriteFrameType.Indexed8:
-								{
-									cc = src.Palette[src.Data[k++]];
-									break;
-								}
-
-								case SpriteFrameType.Rgba32:
-								case SpriteFrameType.Rgb24:
-								{
-									var r = src.Data[k++];
-									var g = src.Data[k++];
-									var b = src.Data[k++];
-									var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[k++] : (byte)255;
-									cc = Color.FromArgb(a, r, g, b);
-									break;
-								}
-
-								// Pngs don't support BGR[A], so no need to include them here
-								default:
-									throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
-							}
-
-							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
+							cc = src.Palette[src.Data[k++]];
+							break;
 						}
+
+						case SpriteFrameType.Rgba32:
+						case SpriteFrameType.Rgb24:
+						{
+							var r = src.Data[k++];
+							var g = src.Data[k++];
+							var b = src.Data[k++];
+							var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[k++] : (byte)255;
+							cc = Color.FromArgb(a, r, g, b);
+							break;
+						}
+
+						// Pngs don't support BGR[A], so no need to include them here
+						default:
+							throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
 					}
+
+					writer.BaseStream.Position = ((y + j) * destStride + x + i) * 4;
+					writer.Write(PremultiplyAlpha(cc).ToArgb());
 				}
 			}
 		}

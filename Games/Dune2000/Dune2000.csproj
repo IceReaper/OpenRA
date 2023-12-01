@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<OutputType>exe</OutputType>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="d2k\**\*" CopyToOutputDirectory="PreserveNewest" Condition="'$(Configuration)' == 'Release'"/>
+		<Content Include="common\**\*" CopyToOutputDirectory="PreserveNewest" Condition="'$(Configuration)' == 'Release'"/>
+		<Content Include="modcontent\**\*" CopyToOutputDirectory="PreserveNewest" Condition="'$(Configuration)' == 'Release'"/>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj"/>
+		<ProjectReference Include="..\..\OpenRA.Mods.Common\OpenRA.Mods.Common.csproj"/>
+		<ProjectReference Include="..\..\OpenRA.Game\OpenRA.Game.csproj"/>
+		<ProjectReference Include="..\..\OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj"/>
+	</ItemGroup>
+
+</Project>

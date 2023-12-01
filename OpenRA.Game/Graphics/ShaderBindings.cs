@@ -63,7 +63,7 @@ namespace OpenRA.Graphics
 
 		public static string GetShaderCode(string filename)
 		{
-			var filepath = Path.Combine(Platform.EngineDir, "glsl", filename);
+			var filepath = Path.Combine(Platform.BinDir, "glsl", filename);
 			return File.ReadAllText(filepath);
 		}
 	}

@@ -35,55 +35,12 @@ namespace OpenRA
 
 			// Allow mods to load types from the core Game assembly, and any additional assemblies they specify.
 			// Assemblies can only be loaded from directories to avoid circular dependencies on package loaders.
-			var assemblyList = new List<Assembly>() { typeof(Game).Assembly };
-			foreach (var path in manifest.Assemblies)
-			{
-				var resolvedPath = FileSystem.FileSystem.ResolveAssemblyPath(path, manifest, mods);
-				if (resolvedPath == null)
-					throw new FileNotFoundException($"Assembly `{path}` not found.");
-
-				LoadAssembly(assemblyList, resolvedPath);
-			}
+			var assemblyList = new List<Assembly>() { typeof(Game).Assembly, Assembly.GetEntryAssembly() };
+			foreach (var name in manifest.Assemblies)
+				assemblyList.Add(AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.GetName().Name == name) ?? Assembly.Load(name));
 
 			AppDomain.CurrentDomain.AssemblyResolve += ResolveAssembly;
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => (asm, ns))).ToArray();
-		}
-
-		static void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
-		{
-			// .NET doesn't provide any way of querying the metadata of an assembly without either:
-			//   (a) loading duplicate data into the application domain, breaking the world.
-			//   (b) crashing if the assembly has already been loaded.
-			// We can't check the internal name of the assembly, so we'll work off the data instead
-			string hash;
-			using (var stream = File.OpenRead(resolvedPath))
-				hash = CryptoUtil.SHA1Hash(stream);
-
-			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
-			{
-#if NET5_0_OR_GREATER
-				var loader = new Support.AssemblyLoader(resolvedPath);
-				assembly = loader.LoadDefaultAssembly();
-				ResolvedAssemblies.Add(hash, assembly);
-#else
-				assembly = Assembly.LoadFile(resolvedPath);
-				ResolvedAssemblies.Add(hash, assembly);
-
-				// Allow mods to use libraries.
-				var assemblyPath = Path.GetDirectoryName(resolvedPath);
-				if (assemblyPath != null)
-				{
-					foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
-					{
-						var depedencyPath = Path.Combine(assemblyPath, referencedAssembly.Name + ".dll");
-						if (File.Exists(depedencyPath))
-							LoadAssembly(assemblyList, depedencyPath);
-					}
-				}
-#endif
-			}
-
-			assemblyList.Add(assembly);
 		}
 
 		Assembly ResolveAssembly(object sender, ResolveEventArgs e)

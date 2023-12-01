@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -226,24 +227,28 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var stride = radarSheet.Size.Width;
 
-			unsafe
-			{
-				fixed (byte* colorBytes = &radarData[0])
-				{
-					var colors = (int*)colorBytes;
-					if (isRectangularIsometric)
-					{
-						// Odd rows are shifted right by 1px
-						var dx = uv.V & 1;
-						if (uv.U + dx > 0)
-							colors[uv.V * stride + 2 * uv.U + dx - 1] = leftColor;
+			var writer = new BinaryWriter(new MemoryStream(radarData));
 
-						if (2 * uv.U + dx < stride)
-							colors[uv.V * stride + 2 * uv.U + dx] = rightColor;
-					}
-					else
-						colors[uv.V * stride + uv.U] = leftColor;
+			if (isRectangularIsometric)
+			{
+				// Odd rows are shifted right by 1px
+				var dx = uv.V & 1;
+				if (uv.U + dx > 0)
+				{
+					writer.BaseStream.Position = (uv.V * stride + 2 * uv.U + dx - 1) * 4;
+					writer.Write(leftColor);
 				}
+
+				if (2 * uv.U + dx < stride)
+				{
+					writer.BaseStream.Position = (uv.V * stride + 2 * uv.U + dx) * 4;
+					writer.Write(rightColor);
+				}
+			}
+			else
+			{
+				writer.BaseStream.Position = (uv.V * stride + uv.U) * 4;
+				writer.Write(leftColor);
 			}
 		}
 
@@ -257,26 +262,31 @@ namespace OpenRA.Mods.Common.Widgets
 				color = ColorFog;
 
 			var stride = radarSheet.Size.Width;
-			unsafe
-			{
-				fixed (byte* colorBytes = &radarData[0])
-				{
-					var colors = (int*)colorBytes;
-					foreach (var iuv in world.Map.Unproject(puv))
-					{
-						if (isRectangularIsometric)
-						{
-							// Odd rows are shifted right by 1px
-							var dx = iuv.V & 1;
-							if (iuv.U + dx > 0)
-								colors[iuv.V * stride + 2 * iuv.U + dx - 1 + previewWidth] = color;
 
-							if (2 * iuv.U + dx < stride)
-								colors[iuv.V * stride + 2 * iuv.U + dx + previewWidth] = color;
-						}
-						else
-							colors[iuv.V * stride + iuv.U + previewWidth] = color;
+			var writer = new BinaryWriter(new MemoryStream(radarData));
+
+			foreach (var iuv in world.Map.Unproject(puv))
+			{
+				if (isRectangularIsometric)
+				{
+					// Odd rows are shifted right by 1px
+					var dx = iuv.V & 1;
+					if (iuv.U + dx > 0)
+					{
+						writer.BaseStream.Position = (iuv.V * stride + 2 * iuv.U + dx - 1 + previewWidth) * 4;
+						writer.Write(color);
 					}
+
+					if (2 * iuv.U + dx < stride)
+					{
+						writer.BaseStream.Position = (iuv.V * stride + 2 * iuv.U + dx + previewWidth) * 4;
+						writer.Write(color);
+					}
+				}
+				else
+				{
+					writer.BaseStream.Position = (iuv.V * stride + iuv.U + previewWidth) * 4;
+					writer.Write(color);
 				}
 			}
 		}
@@ -403,39 +413,42 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var cells = new List<(CPos Cell, Color Color)>();
 
-				unsafe
+				var writer = new BinaryWriter(new MemoryStream(radarData));
+
+				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
-					fixed (byte* colorBytes = &radarData[0])
+					if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
+						continue;
+
+					cells.Clear();
+					t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
+					foreach (var cell in cells)
 					{
-						var colors = (int*)colorBytes;
+						if (!world.Map.Contains(cell.Cell))
+							continue;
 
-						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+						var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
+						var color = cell.Color.ToArgb();
+						if (isRectangularIsometric)
 						{
-							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
-								continue;
-
-							cells.Clear();
-							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
-							foreach (var cell in cells)
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (uv.U + dx > 0)
 							{
-								if (!world.Map.Contains(cell.Cell))
-									continue;
-
-								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
-								var color = cell.Color.ToArgb();
-								if (isRectangularIsometric)
-								{
-									// Odd rows are shifted right by 1px
-									var dx = uv.V & 1;
-									if (uv.U + dx > 0)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
-
-									if (2 * uv.U + dx < stride)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
-								}
-								else
-									colors[(uv.V + previewHeight) * stride + uv.U] = color;
+								writer.BaseStream.Position = ((uv.V + previewHeight) * stride + 2 * uv.U + dx - 1) * 4;
+								writer.Write(color);
 							}
+
+							if (2 * uv.U + dx < stride)
+							{
+								writer.BaseStream.Position = ((uv.V + previewHeight) * stride + 2 * uv.U + dx) * 4;
+								writer.Write(color);
+							}
+						}
+						else
+						{
+							writer.BaseStream.Position = ((uv.V + previewHeight) * stride + uv.U) * 4;
+							writer.Write(color);
 						}
 					}
 				}

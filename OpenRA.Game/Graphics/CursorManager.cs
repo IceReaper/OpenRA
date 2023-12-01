@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -230,17 +231,12 @@ namespace OpenRA.Graphics
 			var width = frame.Size.Width;
 			var height = frame.Size.Height;
 			var data = new byte[4 * width * height];
-			unsafe
-			{
-				// Cast the data to an int array so we can copy the src data directly
-				fixed (byte* bd = &data[0])
-				{
-					var rgba = (uint*)bd;
-					for (var j = 0; j < height; j++)
-						for (var i = 0; i < width; i++)
-							rgba[j * width + i] = palette[frame.Data[j * width + i]];
-				}
-			}
+
+			var writer = new BinaryWriter(new MemoryStream(data));
+
+			for (var j = 0; j < height; j++)
+			for (var i = 0; i < width; i++)
+				writer.Write(palette[frame.Data[j * width + i]]);
 
 			return data;
 		}

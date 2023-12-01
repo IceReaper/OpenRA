@@ -255,8 +255,6 @@ namespace OpenRA
 
 	public class GameSettings
 	{
-		public string Platform = "Default";
-
 		public bool ViewportEdgeScroll = true;
 		public int ViewportEdgeScrollMargin = 5;
 

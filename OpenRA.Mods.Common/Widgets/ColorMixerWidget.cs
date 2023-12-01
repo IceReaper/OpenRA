@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.IO;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -63,21 +64,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 			newHue ??= H;
 			var buffer = new byte[4 * 256 * 256];
-			unsafe
-			{
-				// Generate palette in HSV
-				fixed (byte* cc = &buffer[0])
-				{
-					var c = (int*)cc;
-					for (var v = 0; v < 256; v++)
-					{
-						for (var s = 0; s < 256; s++)
-						{
-							*(c + s * 256 + v) = Color.FromAhsv(newHue.Value, 1 - s / 255f, v / 255f).ToArgb();
-						}
-					}
-				}
-			}
+
+			var writer = new BinaryWriter(new MemoryStream(buffer));
+
+			// Generate palette in HSV
+			for (var s = 0; s < 256; s++)
+			for (var v = 0; v < 256; v++)
+				writer.Write(Color.FromAhsv(newHue.Value, 1 - s / 255f, v / 255f).ToArgb());
 
 			var rect = new Rectangle(
 				(int)(255 * minVal),
