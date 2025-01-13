@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Linguini.Bundle" Version="0.8.1" />
+        <PackageReference Include="OpenRA-Eluant" Version="1.0.22" />
+        <PackageReference Include="Mono.NAT" Version="3.0.4" />
+        <PackageReference Include="SharpZipLib" Version="1.4.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\AUTHORS" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>

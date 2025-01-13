@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>exe</OutputType>
+        <AssemblyName>TiberianSun</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OpenRA.Mods.Cnc\OpenRA.Mods.Cnc.csproj" />
+        <ProjectReference Include="..\OpenRA.Platforms.Default\OpenRA.Platforms.Default.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="mods\**\*.*" LinkBase="mods" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="..\global mix database.dat" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>

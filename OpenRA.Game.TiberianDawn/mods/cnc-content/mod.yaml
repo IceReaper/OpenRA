@@ -1,0 +1,116 @@
+Metadata:
+	Title: mod-title
+	Version: {DEV_VERSION}
+	Hidden: true
+
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
+		^EngineDir|mods/common-content: content
+		^EngineDir|mods/common: common
+		$cnc-content: cnccontent
+
+Rules:
+	content|rules.yaml
+
+Cursors:
+	content|cursors.yaml
+
+Chrome:
+	content|chrome.yaml
+
+ChromeLayout:
+	content|content.yaml
+
+Notifications:
+	content|notifications.yaml
+
+LoadScreen: ModContentLoadScreen
+	Image: ^EngineDir|mods/common-content/chrome.png
+	Image2x: ^EngineDir|mods/common-content/chrome-2x.png
+	Image3x: ^EngineDir|mods/common-content/chrome-3x.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	content|metrics.yaml
+
+FluentMessages:
+	common|fluent/common.ftl
+	content|fluent/content.ftl
+	content|fluent/chrome.ftl
+	cnccontent|fluent/chrome.ftl
+
+Fonts:
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size: 10
+		Ascender: 8
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size: 10
+		Ascender: 8
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+		Ascender: 11
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+		Ascender: 14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+		Ascender: 18
+
+ModContent:
+	Mod: cnc
+	QuickDownload: basefiles
+	Packages:
+		ContentPackage@base:
+			Title: modcontent-package-basefiles
+			Identifier: base
+			TestFiles: ^SupportDir|Content/conquer.mix, ^SupportDir|Content/desert.mix, ^SupportDir|Content/sounds.mix, ^SupportDir|Content/speech.mix, ^SupportDir|Content/temperat.mix, ^SupportDir|Content/tempicnh.mix, ^SupportDir|Content/winter.mix
+			Sources: gdi95, nod95, tfd, tuc-steam, tuc-origin, cncr-steam, cncr-origin
+			Required: true
+			Download: basefiles
+		ContentPackage@music:
+			Title: modcontent-package-basemusic
+			Identifier: music
+			TestFiles: ^SupportDir|Content/scores.mix
+			Sources: gdi95, nod95, tfd, tuc-steam, tuc-origin, cncr-steam, cncr-origin
+		ContentPackage@movies-gdi:
+			Title: modcontent-package-gdi
+			Identifier: movies-gdi
+			TestFiles: ^SupportDir|Content/movies/visor.vqa, ^SupportDir|Content/movies/turtkill.vqa, ^SupportDir|Content/movies/tbrinfo3.vqa, ^SupportDir|Content/movies/tbrinfo2.vqa, ^SupportDir|Content/movies/tbrinfo1.vqa, ^SupportDir|Content/movies/seige.vqa, ^SupportDir|Content/movies/samsite.vqa, ^SupportDir|Content/movies/samdie.vqa, ^SupportDir|Content/movies/sabotage.vqa, ^SupportDir|Content/movies/retro.vqa, ^SupportDir|Content/movies/podium.vqa, ^SupportDir|Content/movies/planecra.vqa, ^SupportDir|Content/movies/pintle.vqa, ^SupportDir|Content/movies/paratrop.vqa, ^SupportDir|Content/movies/nodsweep.vqa, ^SupportDir|Content/movies/nodlose.vqa, ^SupportDir|Content/movies/nodflees.vqa, ^SupportDir|Content/movies/nod1.vqa, ^SupportDir|Content/movies/nitejump.vqa, ^SupportDir|Content/movies/napalm.vqa, ^SupportDir|Content/movies/logo.vqa, ^SupportDir|Content/movies/landing.vqa, ^SupportDir|Content/movies/intro2.vqa, ^SupportDir|Content/movies/hellvaly.vqa, ^SupportDir|Content/movies/gunboat.vqa, ^SupportDir|Content/movies/generic.vqa, ^SupportDir|Content/movies/gdilose.vqa, ^SupportDir|Content/movies/gdifinb.vqa, ^SupportDir|Content/movies/gdifina.vqa, ^SupportDir|Content/movies/gdiend2.vqa, ^SupportDir|Content/movies/gdiend1.vqa, ^SupportDir|Content/movies/gdi9.vqa, ^SupportDir|Content/movies/gdi8b.vqa, ^SupportDir|Content/movies/gdi8a.vqa, ^SupportDir|Content/movies/gdi7.vqa, ^SupportDir|Content/movies/gdi6.vqa, ^SupportDir|Content/movies/gdi5.vqa, ^SupportDir|Content/movies/gdi4b.vqa, ^SupportDir|Content/movies/gdi4a.vqa, ^SupportDir|Content/movies/gdi3lose.vqa, ^SupportDir|Content/movies/gdi3.vqa, ^SupportDir|Content/movies/gdi2.vqa, ^SupportDir|Content/movies/gdi15.vqa, ^SupportDir|Content/movies/gdi14.vqa, ^SupportDir|Content/movies/gdi13.vqa, ^SupportDir|Content/movies/gdi12.vqa, ^SupportDir|Content/movies/gdi11.vqa, ^SupportDir|Content/movies/gdi10.vqa, ^SupportDir|Content/movies/gdi1.vqa, ^SupportDir|Content/movies/gameover.vqa, ^SupportDir|Content/movies/forestkl.vqa, ^SupportDir|Content/movies/flyy.vqa, ^SupportDir|Content/movies/flag.vqa, ^SupportDir|Content/movies/dino.vqa, ^SupportDir|Content/movies/desolat.vqa, ^SupportDir|Content/movies/consyard.vqa, ^SupportDir|Content/movies/cc2tease.vqa, ^SupportDir|Content/movies/burdet2.vqa, ^SupportDir|Content/movies/burdet1.vqa, ^SupportDir|Content/movies/bombflee.vqa, ^SupportDir|Content/movies/bombaway.vqa, ^SupportDir|Content/movies/bkground.vqa, ^SupportDir|Content/movies/bcanyon.vqa, ^SupportDir|Content/movies/banner.vqa
+			Sources: gdi95, tfd, tuc-steam, tuc-origin, cncr-steam, cncr-origin
+		ContentPackage@movies-nod:
+			Title: modcontent-package-nod
+			Identifier: movies-nod
+			TestFiles: ^SupportDir|Content/movies/visor.vqa, ^SupportDir|Content/movies/trtkil_d.vqa, ^SupportDir|Content/movies/tiberfx.vqa, ^SupportDir|Content/movies/tankkill.vqa, ^SupportDir|Content/movies/tankgo.vqa, ^SupportDir|Content/movies/sundial.vqa, ^SupportDir|Content/movies/stealth.vqa, ^SupportDir|Content/movies/spycrash.vqa, ^SupportDir|Content/movies/sethpre.vqa, ^SupportDir|Content/movies/seige.vqa, ^SupportDir|Content/movies/samsite.vqa, ^SupportDir|Content/movies/retro.vqa, ^SupportDir|Content/movies/refint.vqa, ^SupportDir|Content/movies/obel.vqa, ^SupportDir|Content/movies/nuke.vqa, ^SupportDir|Content/movies/nodlose.vqa, ^SupportDir|Content/movies/nodfinal.vqa, ^SupportDir|Content/movies/nodend4.vqa, ^SupportDir|Content/movies/nodend3.vqa, ^SupportDir|Content/movies/nodend2.vqa, ^SupportDir|Content/movies/nodend1.vqa, ^SupportDir|Content/movies/nod9.vqa, ^SupportDir|Content/movies/nod8.vqa, ^SupportDir|Content/movies/nod7b.vqa, ^SupportDir|Content/movies/nod7a.vqa, ^SupportDir|Content/movies/nod6.vqa, ^SupportDir|Content/movies/nod5.vqa, ^SupportDir|Content/movies/nod4b.vqa, ^SupportDir|Content/movies/nod4a.vqa, ^SupportDir|Content/movies/nod3.vqa, ^SupportDir|Content/movies/nod2.vqa, ^SupportDir|Content/movies/nod1pre.vqa, ^SupportDir|Content/movies/nod13.vqa, ^SupportDir|Content/movies/nod12.vqa, ^SupportDir|Content/movies/nod11.vqa, ^SupportDir|Content/movies/nod10b.vqa, ^SupportDir|Content/movies/nod10a.vqa, ^SupportDir|Content/movies/nod1.vqa, ^SupportDir|Content/movies/logo.vqa, ^SupportDir|Content/movies/landing.vqa, ^SupportDir|Content/movies/kanepre.vqa, ^SupportDir|Content/movies/intro2.vqa, ^SupportDir|Content/movies/insites.vqa, ^SupportDir|Content/movies/generic.vqa, ^SupportDir|Content/movies/gdi1.vqa, ^SupportDir|Content/movies/gameover.vqa, ^SupportDir|Content/movies/forestkl.vqa, ^SupportDir|Content/movies/flag.vqa, ^SupportDir|Content/movies/dino.vqa, ^SupportDir|Content/movies/dessweep.vqa, ^SupportDir|Content/movies/deskill.vqa, ^SupportDir|Content/movies/desflees.vqa, ^SupportDir|Content/movies/consyard.vqa, ^SupportDir|Content/movies/cc2tease.vqa, ^SupportDir|Content/movies/bombflee.vqa, ^SupportDir|Content/movies/bombaway.vqa, ^SupportDir|Content/movies/bcanyon.vqa, ^SupportDir|Content/movies/banner.vqa, ^SupportDir|Content/movies/akira.vqa, ^SupportDir|Content/movies/airstrk.vqa
+			Sources: nod95, tfd, tuc-steam, tuc-origin, cncr-steam, cncr-origin
+		ContentPackage@music-covertops:
+			Title: modcontent-package-covertopsmusic
+			Identifier: music-covertops
+			TestFiles: ^SupportDir|Content/scores-covertops.mix
+			Sources: covertops, tfd, tuc-steam, tuc-origin, cncr-steam, cncr-origin
+	Downloads:
+		cnccontent|installer/downloads.yaml
+	Sources:
+		cnccontent|installer/covertops.yaml
+		cnccontent|installer/firstdecade.yaml
+		cnccontent|installer/gdi95.yaml
+		cnccontent|installer/nod95.yaml
+		cnccontent|installer/origin.yaml
+		cnccontent|installer/steam.yaml
+
+SoundFormats:
+
+SpriteFormats: PngSheet
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: DefaultSpriteSequence

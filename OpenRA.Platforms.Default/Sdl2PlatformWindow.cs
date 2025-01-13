@@ -230,7 +230,7 @@ namespace OpenRA.Platforms.Default
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
-				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
+				window = SDL.SDL_CreateWindow(Game.ProductName, SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
 					windowSize.Width, windowSize.Height, WindowFlags);
 
 				if (Platform.CurrentPlatform == PlatformType.Linux)

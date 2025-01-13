@@ -63,19 +63,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			newHue ??= H;
 			var buffer = new byte[4 * 256 * 256];
-			unsafe
+			for (var v = 0; v < 256; v++)
 			{
-				// Generate palette in HSV
-				fixed (byte* cc = &buffer[0])
+				for (var s = 0; s < 256; s++)
 				{
-					var c = (uint*)cc;
-					for (var v = 0; v < 256; v++)
-					{
-						for (var s = 0; s < 256; s++)
-						{
-							*(c + s * 256 + v) = Color.FromAhsv(newHue.Value, 1 - s / 255f, v / 255f).ToArgb();
-						}
-					}
+					Array.Copy(BitConverter.GetBytes(Color.FromAhsv(newHue.Value, 1 - s / 255f, v / 255f).ToArgb()), 0, buffer, (s * 256 + v) * 4, 4);
 				}
 			}
 

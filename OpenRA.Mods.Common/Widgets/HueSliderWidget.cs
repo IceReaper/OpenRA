@@ -15,6 +15,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
+	using System;
+
 	public class HueSliderWidget : SliderWidget
 	{
 		Sprite hueSprite;
@@ -32,16 +34,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var buffer = new byte[4 * 256];
 
-			unsafe
+			for (var h = 0; h < 256; h++)
 			{
-				fixed (byte* cc = &buffer[0])
-				{
-					var c = (uint*)cc;
-					for (var h = 0; h < 256; h++)
-					{
-						*(c + 0 * 256 + h) = Color.FromAhsv(h / 255f, 1, 1).ToArgb();
-					}
-				}
+				Array.Copy(BitConverter.GetBytes(Color.FromAhsv(h / 255f, 1, 1).ToArgb()), 0, buffer, h * 4, 4);
 			}
 
 			var rect = new Rectangle(0, 0, 256, 1);

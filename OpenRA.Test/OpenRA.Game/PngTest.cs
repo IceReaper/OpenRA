@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -18,6 +18,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Test
 {
+	using NUnit.Framework.Legacy;
+
 	[TestFixture]
 	public class PngTests
 	{
@@ -32,7 +34,7 @@ namespace OpenRA.Test
 			var result = png.Save();
 
 			// Assert
-			Assert.IsTrue(Png.Verify(new MemoryStream(result)));
+			Assert.That(Png.Verify(new MemoryStream(result)), Is.True);
 		}
 
 		[Test]
@@ -143,7 +145,7 @@ namespace OpenRA.Test
 			{
 				// Act & Assert
 				var exception = Assert.Throws<InvalidDataException>(() => new Png(stream));
-				Assert.AreEqual("Compression method not supported", exception.Message);
+				Assert.That("Compression method not supported", Is.EqualTo(exception.Message));
 			}
 		}
 

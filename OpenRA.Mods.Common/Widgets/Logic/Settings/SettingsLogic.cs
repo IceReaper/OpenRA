@@ -20,15 +20,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SettingsLogic : ChromeLogic
 	{
 		[FluentReference]
-		const string SettingsSaveTitle = "dialog-settings-save.title";
-
-		[FluentReference]
-		const string SettingsSavePrompt = "dialog-settings-save.prompt";
-
-		[FluentReference]
-		const string SettingsSaveCancel = "dialog-settings-save.cancel";
-
-		[FluentReference]
 		const string RestartTitle = "dialog-settings-restart.title";
 
 		[FluentReference]
@@ -108,22 +99,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				void CloseAndExit() { Ui.CloseWindow(); onExit(); }
 				if (needsRestart)
 				{
-					void NoRestart() => ConfirmationDialogs.ButtonPrompt(modData,
-						title: SettingsSaveTitle,
-						text: SettingsSavePrompt,
-						onCancel: CloseAndExit,
-						cancelText: SettingsSaveCancel);
-
-					if (!Game.ExternalMods.TryGetValue(ExternalMod.MakeKey(Game.ModData.Manifest), out var external))
-					{
-						NoRestart();
-						return;
-					}
-
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: RestartTitle,
 						text: RestartPrompt,
-						onConfirm: () => Game.SwitchToExternalMod(external, null, NoRestart),
+						onConfirm: () => Game.InitializeMod(Game.ModData.Manifest.Id, new Arguments()),
 						confirmText: RestartAccept,
 						onCancel: CloseAndExit,
 						cancelText: RestartCancel);

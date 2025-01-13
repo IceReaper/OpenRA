@@ -14,6 +14,8 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Test
 {
+	using NUnit.Framework.Legacy;
+
 	[TestFixture]
 	sealed class SpatiallyPartitionedTest
 	{

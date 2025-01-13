@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Action<string> onRetry = pass => ConnectionLogic.Connect(connection.Target, pass, OnConnect, onExit);
 
-				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
+				var switchPanel = CurrentServerSettings.ServerMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
 				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },

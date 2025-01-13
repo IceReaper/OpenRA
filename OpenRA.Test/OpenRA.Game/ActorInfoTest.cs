@@ -15,6 +15,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Test
 {
+	using NUnit.Framework.Legacy;
+
 	interface IMock : ITraitInfoInterface { }
 	class MockTraitInfo : TraitInfo { public override object Create(ActorInitializer init) { return null; } }
 	class MockInheritInfo : MockTraitInfo { }

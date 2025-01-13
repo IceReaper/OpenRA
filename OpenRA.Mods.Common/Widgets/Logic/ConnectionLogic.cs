@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				CloseWindow();
 
-				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
+				var switchPanel = CurrentServerSettings.ServerMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
 				Ui.OpenWindow(switchPanel, new WidgetArgs()
 				{
 					{ "orderManager", om },
@@ -182,9 +182,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
-		[FluentReference]
-		const string ModSwitchFailed = "notification-mod-switch-failed";
-
 		[ObjectCreator.UseCtor]
 		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)
 		{
@@ -192,24 +189,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
 			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
 
-			var mod = CurrentServerSettings.ServerExternalMod;
-			var modTitle = mod.Id;
-			var modVersion = mod.Version;
+			var mod = CurrentServerSettings.ServerMod;
+			var modTitle = mod.Metadata.TitleTranslated;
+			var modVersion = mod.Metadata.Version;
 
 			switchButton.OnClick = () =>
 			{
 				var launchCommand = $"Launch.URI={new UriBuilder("tcp", connection.EndPoint.Address.ToString(), connection.EndPoint.Port)}";
-				Game.SwitchToExternalMod(CurrentServerSettings.ServerExternalMod, new[] { launchCommand }, () =>
-				{
-					orderManager.ServerError = ModSwitchFailed;
-					Ui.CloseWindow();
-					Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
-					{
-						{ "orderManager", orderManager },
-						{ "onAbort", onAbort },
-						{ "onRetry", onRetry }
-					});
-				});
+				Game.InitializeMod(mod.Id, new Arguments(new[] { launchCommand }));
 			};
 
 			abortButton.Visible = onAbort != null;
@@ -236,39 +223,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				width = Math.Max(width, version.Bounds.X + labelWidth);
 				version.Bounds.Width = labelWidth;
 				version.GetText = () => label;
-			}
-
-			var logo = panel.GetOrNull<RGBASpriteWidget>("MOD_ICON");
-			if (logo != null)
-			{
-				logo.GetSprite = () =>
-				{
-					var ws = Game.Renderer.WindowScale;
-					if (ws > 2 && mod.Icon3x != null)
-						return mod.Icon3x;
-
-					if (ws > 1 && mod.Icon2x != null)
-						return mod.Icon2x;
-
-					return mod.Icon;
-				};
-
-				if (mod.Icon == null)
-				{
-					// Hide the logo and center just the text
-					if (title != null)
-						title.Bounds.X = logo.Bounds.X;
-
-					if (version != null)
-						version.Bounds.X = logo.Bounds.X;
-
-					width -= logo.Bounds.Width;
-				}
-				else
-				{
-					// Add an equal logo margin on the right of the text
-					width += logo.Bounds.Width;
-				}
 			}
 
 			var container = panel.GetOrNull("MOD_CONTAINER");

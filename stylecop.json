@@ -1,0 +1,8 @@
+{
+  "settings": {
+    "documentationRules": {
+      "copyrightText": "Copyright (c) The OpenRA Developers and Contributors\nThis file is part of OpenRA, which is free software. It is made\navailable to you under the terms of the GNU General Public License\nas published by the Free Software Foundation, either version 3 of\nthe License, or (at your option) any later version. For more\ninformation, see COPYING.",
+      "xmlHeader": false
+    }
+  }
+}

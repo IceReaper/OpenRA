@@ -1,0 +1,8 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Dune 2000": {
+      "commandName": "Project"
+    }
+  }
+}

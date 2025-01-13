@@ -225,25 +225,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var stride = radarSheet.Size.Width;
 
-			unsafe
+			if (isRectangularIsometric)
 			{
-				fixed (byte* colorBytes = &radarData[0])
-				{
-					var colors = (uint*)colorBytes;
-					if (isRectangularIsometric)
-					{
-						// Odd rows are shifted right by 1px
-						var dx = uv.V & 1;
-						if (uv.U + dx > 0)
-							colors[uv.V * stride + 2 * uv.U + dx - 1] = leftColor;
+				// Odd rows are shifted right by 1px
+				var dx = uv.V & 1;
+				if (uv.U + dx > 0)
+					Array.Copy(BitConverter.GetBytes(leftColor), 0, radarData, (uv.V * stride + 2 * uv.U + dx - 1) * 4, 4);
 
-						if (2 * uv.U + dx < stride)
-							colors[uv.V * stride + 2 * uv.U + dx] = rightColor;
-					}
-					else
-						colors[uv.V * stride + uv.U] = leftColor;
-				}
+				if (2 * uv.U + dx < stride)
+					Array.Copy(BitConverter.GetBytes(rightColor), 0, radarData, (uv.V * stride + 2 * uv.U + dx) * 4, 4);
 			}
+			else
+				Array.Copy(BitConverter.GetBytes(leftColor), 0, radarData, (uv.V * stride + uv.U) * 4, 4);
 		}
 
 		void UpdateShroudCell(PPos puv)
@@ -256,27 +249,20 @@ namespace OpenRA.Mods.Common.Widgets
 				color = ColorFog;
 
 			var stride = radarSheet.Size.Width;
-			unsafe
+			foreach (var iuv in world.Map.Unproject(puv))
 			{
-				fixed (byte* colorBytes = &radarData[0])
+				if (isRectangularIsometric)
 				{
-					var colors = (uint*)colorBytes;
-					foreach (var iuv in world.Map.Unproject(puv))
-					{
-						if (isRectangularIsometric)
-						{
-							// Odd rows are shifted right by 1px
-							var dx = iuv.V & 1;
-							if (iuv.U + dx > 0)
-								colors[iuv.V * stride + 2 * iuv.U + dx - 1 + previewWidth] = color;
+					// Odd rows are shifted right by 1px
+					var dx = iuv.V & 1;
+					if (iuv.U + dx > 0)
+						Array.Copy(BitConverter.GetBytes(color), 0, radarData, (iuv.V * stride + 2 * iuv.U + dx - 1 + previewWidth) * 4, 4);
 
-							if (2 * iuv.U + dx < stride)
-								colors[iuv.V * stride + 2 * iuv.U + dx + previewWidth] = color;
-						}
-						else
-							colors[iuv.V * stride + iuv.U + previewWidth] = color;
-					}
+					if (2 * iuv.U + dx < stride)
+						Array.Copy(BitConverter.GetBytes(color), 0, radarData, (iuv.V * stride + 2 * iuv.U + dx + previewWidth) * 4, 4);
 				}
+				else
+					Array.Copy(BitConverter.GetBytes(color), 0, radarData, (iuv.V * stride + iuv.U + previewWidth) * 4, 4);
 			}
 		}
 
@@ -402,40 +388,32 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var cells = new List<(CPos Cell, Color Color)>();
 
-				unsafe
+				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
-					fixed (byte* colorBytes = &radarData[0])
+					if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
+						continue;
+
+					cells.Clear();
+					t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
+					foreach (var cell in cells)
 					{
-						var colors = (uint*)colorBytes;
+						if (!world.Map.Contains(cell.Cell))
+							continue;
 
-						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
+						var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
+						var color = cell.Color.ToArgb();
+						if (isRectangularIsometric)
 						{
-							if (!t.Actor.IsInWorld || world.FogObscures(t.Actor))
-								continue;
+							// Odd rows are shifted right by 1px
+							var dx = uv.V & 1;
+							if (uv.U + dx > 0)
+								Array.Copy(BitConverter.GetBytes(color), 0, radarData, ((uv.V + previewHeight) * stride + 2 * uv.U + dx - 1) * 4, 4);
 
-							cells.Clear();
-							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
-							foreach (var cell in cells)
-							{
-								if (!world.Map.Contains(cell.Cell))
-									continue;
-
-								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);
-								var color = cell.Color.ToArgb();
-								if (isRectangularIsometric)
-								{
-									// Odd rows are shifted right by 1px
-									var dx = uv.V & 1;
-									if (uv.U + dx > 0)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx - 1] = color;
-
-									if (2 * uv.U + dx < stride)
-										colors[(uv.V + previewHeight) * stride + 2 * uv.U + dx] = color;
-								}
-								else
-									colors[(uv.V + previewHeight) * stride + uv.U] = color;
-							}
+							if (2 * uv.U + dx < stride)
+								Array.Copy(BitConverter.GetBytes(color), 0, radarData, ((uv.V + previewHeight) * stride + 2 * uv.U + dx) * 4, 4);
 						}
+						else
+							Array.Copy(BitConverter.GetBytes(color), 0, radarData, ((uv.V + previewHeight) * stride + uv.U) * 4, 4);
 					}
 				}
 			}

@@ -75,15 +75,8 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 								palette[i] = r.GetRemappedColor(Color.FromArgb(palette[i]), i).ToArgb();
 						}
 
-						unsafe
-						{
-							fixed (byte* bd = &Data[0])
-							{
-								var data = (uint*)bd;
-								for (var i = 0; i < pixelCount; i++)
-									data[i] = palette[inner.Data[i]];
-							}
-						}
+						for (var i = 0; i < pixelCount; i++)
+							Array.Copy(BitConverter.GetBytes(palette[inner.Data[i]]), 0, Data, i * 4, 4);
 					}
 
 					return data;

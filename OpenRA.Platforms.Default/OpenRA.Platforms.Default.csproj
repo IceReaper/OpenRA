@@ -1,13 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
-    <PackageReference Include="OpenRA-Freetype6" Version="1.0.11" />
-    <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
-    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.41" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OpenRA\OpenRA.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="OpenRA-Freetype6" Version="1.0.11" />
+        <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
+        <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.41" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="glsl\**\*.*" LinkBase="glsl" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
 </Project>

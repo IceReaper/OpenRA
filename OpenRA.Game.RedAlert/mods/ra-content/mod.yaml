@@ -1,0 +1,138 @@
+Metadata:
+	Title: mod-title
+	Version: {DEV_VERSION}
+	Hidden: true
+
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
+		^EngineDir|mods/common-content: content
+		^EngineDir|mods/common: common
+		$ra-content: racontent
+
+Rules:
+	content|rules.yaml
+
+Cursors:
+	content|cursors.yaml
+
+Chrome:
+	content|chrome.yaml
+
+ChromeLayout:
+	content|content.yaml
+
+Notifications:
+	content|notifications.yaml
+
+LoadScreen: ModContentLoadScreen
+	Image: ^EngineDir|mods/common-content/chrome.png
+	Image2x: ^EngineDir|mods/common-content/chrome-2x.png
+	Image3x: ^EngineDir|mods/common-content/chrome-3x.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	content|metrics.yaml
+
+FluentMessages:
+	common|fluent/common.ftl
+	content|fluent/content.ftl
+	content|fluent/chrome.ftl
+	racontent|fluent/chrome.ftl
+
+Fonts:
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size: 10
+		Ascender: 8
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size: 10
+		Ascender: 8
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+		Ascender: 11
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+		Ascender: 14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+		Ascender: 18
+
+
+ModContent:
+	Mod: ra
+	QuickDownload: quickinstall
+	Packages:
+		ContentPackage@base:
+			Title: modcontent-package-basefiles
+			Identifier: base
+			TestFiles: ^SupportDir|Content/allies.mix, ^SupportDir|Content/conquer.mix, ^SupportDir|Content/interior.mix, ^SupportDir|Content/hires.mix, ^SupportDir|Content/lores.mix, ^SupportDir|Content/local.mix, ^SupportDir|Content/speech.mix, ^SupportDir|Content/russian.mix, ^SupportDir|Content/snow.mix, ^SupportDir|Content/sounds.mix, ^SupportDir|Content/temperat.mix
+			Sources: allied, soviet, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
+			Required: true
+			Download: basefiles
+		ContentPackage@aftermathbase:
+			Title: modcontent-package-aftermathfiles
+			Identifier: aftermathbase
+			TestFiles: ^SupportDir|Content/expand/expand2.mix, ^SupportDir|Content/expand/hires1.mix, ^SupportDir|Content/expand/lores1.mix, ^SupportDir|Content/expand/chrotnk1.aud, ^SupportDir|Content/expand/fixit1.aud, ^SupportDir|Content/expand/jburn1.aud, ^SupportDir|Content/expand/jchrge1.aud, ^SupportDir|Content/expand/jcrisp1.aud, ^SupportDir|Content/expand/jdance1.aud, ^SupportDir|Content/expand/jjuice1.aud, ^SupportDir|Content/expand/jjump1.aud, ^SupportDir|Content/expand/jlight1.aud, ^SupportDir|Content/expand/jpower1.aud, ^SupportDir|Content/expand/jshock1.aud, ^SupportDir|Content/expand/jyes1.aud, ^SupportDir|Content/expand/madchrg2.aud, ^SupportDir|Content/expand/madexplo.aud, ^SupportDir|Content/expand/mboss1.aud, ^SupportDir|Content/expand/mhear1.aud, ^SupportDir|Content/expand/mhotdig1.aud, ^SupportDir|Content/expand/mhowdy1.aud, ^SupportDir|Content/expand/mhuh1.aud, ^SupportDir|Content/expand/mlaff1.aud, ^SupportDir|Content/expand/mrise1.aud, ^SupportDir|Content/expand/mwrench1.aud, ^SupportDir|Content/expand/myeehaw1.aud, ^SupportDir|Content/expand/myes1.aud
+			Sources: aftermath, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
+			Required: true
+			Download: aftermath
+		ContentPackage@cncdesert:
+			Title: modcontent-package-deserttileset
+			Identifier: cncdesert
+			TestFiles: ^SupportDir|Content/cnc/desert.mix
+			Sources: tfd, cnc-steam, cnc-origin, cnc95, cncr-steam, cncr-origin
+			Required: true
+			Download: cncdesert
+		ContentPackage@music:
+			Title: modcontent-package-basemusic
+			Identifier: music
+			TestFiles: ^SupportDir|Content/scores.mix
+			Sources: allied, soviet, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
+		ContentPackage@movies-allied:
+			Title: modcontent-package-allied
+			Identifier: movies-allied
+			TestFiles: ^SupportDir|Content/movies/aagun.vqa, ^SupportDir|Content/movies/aftrmath.vqa, ^SupportDir|Content/movies/ally1.vqa, ^SupportDir|Content/movies/ally10.vqa, ^SupportDir|Content/movies/ally10b.vqa, ^SupportDir|Content/movies/ally11.vqa, ^SupportDir|Content/movies/ally12.vqa, ^SupportDir|Content/movies/ally14.vqa, ^SupportDir|Content/movies/ally2.vqa, ^SupportDir|Content/movies/ally4.vqa, ^SupportDir|Content/movies/ally5.vqa, ^SupportDir|Content/movies/ally6.vqa, ^SupportDir|Content/movies/ally8.vqa, ^SupportDir|Content/movies/ally9.vqa, ^SupportDir|Content/movies/allyend.vqa, ^SupportDir|Content/movies/allymorf.vqa, ^SupportDir|Content/movies/apcescpe.vqa, ^SupportDir|Content/movies/assess.vqa, ^SupportDir|Content/movies/battle.vqa, ^SupportDir|Content/movies/binoc.vqa, ^SupportDir|Content/movies/bmap.vqa, ^SupportDir|Content/movies/brdgtilt.vqa, ^SupportDir|Content/movies/crontest.vqa, ^SupportDir|Content/movies/cronfail.vqa, ^SupportDir|Content/movies/destroyr.vqa, ^SupportDir|Content/movies/dud.vqa, ^SupportDir|Content/movies/elevator.vqa, ^SupportDir|Content/movies/flare.vqa, ^SupportDir|Content/movies/frozen.vqa, ^SupportDir|Content/movies/grvestne.vqa, ^SupportDir|Content/movies/landing.vqa, ^SupportDir|Content/movies/masasslt.vqa, ^SupportDir|Content/movies/mcv.vqa, ^SupportDir|Content/movies/mcv_land.vqa, ^SupportDir|Content/movies/montpass.vqa, ^SupportDir|Content/movies/oildrum.vqa, ^SupportDir|Content/movies/overrun.vqa, ^SupportDir|Content/movies/prolog.vqa, ^SupportDir|Content/movies/redintro.vqa, ^SupportDir|Content/movies/shipsink.vqa, ^SupportDir|Content/movies/shorbom1.vqa, ^SupportDir|Content/movies/shorbom2.vqa, ^SupportDir|Content/movies/shorbomb.vqa, ^SupportDir|Content/movies/snowbomb.vqa, ^SupportDir|Content/movies/soviet1.vqa, ^SupportDir|Content/movies/sovtstar.vqa, ^SupportDir|Content/movies/spy.vqa, ^SupportDir|Content/movies/tanya1.vqa, ^SupportDir|Content/movies/tanya2.vqa, ^SupportDir|Content/movies/toofar.vqa, ^SupportDir|Content/movies/trinity.vqa
+			Sources: allied, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
+		ContentPackage@movies-soviet:
+			Title: modcontent-package-soviet
+			Identifier: movies-soviet
+			TestFiles: ^SupportDir|Content/movies/aagun.vqa, ^SupportDir|Content/movies/cronfail.vqa, ^SupportDir|Content/movies/airfield.vqa, ^SupportDir|Content/movies/ally1.vqa, ^SupportDir|Content/movies/allymorf.vqa, ^SupportDir|Content/movies/averted.vqa, ^SupportDir|Content/movies/beachead.vqa, ^SupportDir|Content/movies/bmap.vqa, ^SupportDir|Content/movies/bombrun.vqa, ^SupportDir|Content/movies/countdwn.vqa, ^SupportDir|Content/movies/double.vqa, ^SupportDir|Content/movies/dpthchrg.vqa, ^SupportDir|Content/movies/execute.vqa, ^SupportDir|Content/movies/flare.vqa, ^SupportDir|Content/movies/landing.vqa, ^SupportDir|Content/movies/mcvbrdge.vqa, ^SupportDir|Content/movies/mig.vqa, ^SupportDir|Content/movies/movingin.vqa, ^SupportDir|Content/movies/mtnkfact.vqa, ^SupportDir|Content/movies/nukestok.vqa, ^SupportDir|Content/movies/onthprwl.vqa, ^SupportDir|Content/movies/periscop.vqa, ^SupportDir|Content/movies/prolog.vqa, ^SupportDir|Content/movies/radrraid.vqa, ^SupportDir|Content/movies/redintro.vqa, ^SupportDir|Content/movies/search.vqa, ^SupportDir|Content/movies/sfrozen.vqa, ^SupportDir|Content/movies/sitduck.vqa, ^SupportDir|Content/movies/slntsrvc.vqa, ^SupportDir|Content/movies/snowbomb.vqa, ^SupportDir|Content/movies/snstrafe.vqa, ^SupportDir|Content/movies/sovbatl.vqa, ^SupportDir|Content/movies/sovcemet.vqa, ^SupportDir|Content/movies/sovfinal.vqa, ^SupportDir|Content/movies/soviet1.vqa, ^SupportDir|Content/movies/soviet10.vqa, ^SupportDir|Content/movies/soviet11.vqa, ^SupportDir|Content/movies/soviet12.vqa, ^SupportDir|Content/movies/soviet13.vqa, ^SupportDir|Content/movies/soviet14.vqa, ^SupportDir|Content/movies/soviet2.vqa, ^SupportDir|Content/movies/soviet3.vqa, ^SupportDir|Content/movies/soviet4.vqa, ^SupportDir|Content/movies/soviet5.vqa, ^SupportDir|Content/movies/soviet6.vqa, ^SupportDir|Content/movies/soviet7.vqa, ^SupportDir|Content/movies/soviet8.vqa, ^SupportDir|Content/movies/soviet9.vqa, ^SupportDir|Content/movies/sovmcv.vqa, ^SupportDir|Content/movies/sovtstar.vqa, ^SupportDir|Content/movies/spotter.vqa, ^SupportDir|Content/movies/strafe.vqa, ^SupportDir|Content/movies/take_off.vqa, ^SupportDir|Content/movies/tesla.vqa, ^SupportDir|Content/movies/v2rocket.vqa
+			Sources: soviet, tfd, ra-steam, ra-origin
+		ContentPackage@music-counterstrike:
+			Title: modcontent-package-counterstrikemusic
+			Identifier: music-counterstrike
+			TestFiles: ^SupportDir|Content/expand/araziod.aud, ^SupportDir|Content/expand/backstab.aud, ^SupportDir|Content/expand/chaos2.aud, ^SupportDir|Content/expand/shut_it.aud, ^SupportDir|Content/expand/2nd_hand.aud, ^SupportDir|Content/expand/twinmix1.aud, ^SupportDir|Content/expand/under3.aud, ^SupportDir|Content/expand/vr2.aud,
+			Sources: counterstrike, ra-steam, ra-origin, cncr-steam, cncr-origin
+		ContentPackage@music-aftermath:
+			Title: modcontent-package-aftermathmusic
+			Identifier: music-aftermath
+			TestFiles: ^SupportDir|Content/expand/await.aud, ^SupportDir|Content/expand/bog.aud, ^SupportDir|Content/expand/float_v2.aud, ^SupportDir|Content/expand/gloom.aud, ^SupportDir|Content/expand/grndwire.aud, ^SupportDir|Content/expand/rpt.aud, ^SupportDir|Content/expand/search.aud, ^SupportDir|Content/expand/traction.aud, ^SupportDir|Content/expand/wastelnd.aud
+			Sources: aftermath, ra-steam, ra-origin, cncr-steam, cncr-origin
+	Downloads:
+		racontent|installer/downloads.yaml
+	Sources:
+		racontent|installer/aftermath.yaml
+		racontent|installer/allies95.yaml
+		racontent|installer/cnc95.yaml
+		racontent|installer/counterstrike.yaml
+		racontent|installer/firstdecade.yaml
+		racontent|installer/origin.yaml
+		racontent|installer/soviet95.yaml
+		racontent|installer/steam.yaml
+
+SoundFormats:
+
+SpriteFormats: PngSheet
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: DefaultSpriteSequence

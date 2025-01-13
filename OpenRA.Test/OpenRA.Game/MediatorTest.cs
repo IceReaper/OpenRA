@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
@@ -26,7 +26,7 @@ namespace OpenRA.Test
 
 			mediator.Send(new TestNotificaton());
 
-			Assert.IsTrue(testHandler.WasNotified);
+			Assert.That(testHandler.WasNotified, Is.True);
 		}
 	}
 

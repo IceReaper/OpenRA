@@ -18,7 +18,7 @@ jobs:
   prepare:
     name: Prepare version strings
     if: github.repository == 'openra/openra'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Prepare environment variables
         run: |
@@ -44,7 +44,7 @@ jobs:
     name: Update Wiki
     needs: prepare
     if: github.repository == 'openra/openra' && needs.prepare.outputs.version_type != 'bleed'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Debug output
         run: |
@@ -55,15 +55,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
+          fetch-depth: 0
 
-      - name: Install .NET 6
+      - name: Install .NET 9
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Prepare Environment
         run: |
-          make all
+          dotnet build
 
       - name: Clone Wiki
         uses: actions/checkout@v4
@@ -75,12 +76,12 @@ jobs:
       - name: Update Wiki (Playtest)
         if: startsWith(needs.prepare.outputs.git_tag, 'playtest-')
         run: |
-          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings (playtest).md"
+          dotnet run --project OpenRA.Docs --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings (playtest).md"
 
       - name: Update Wiki (Release)
         if: startsWith(needs.prepare.outputs.git_tag, 'release-')
         run: |
-          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings.md"
+          dotnet run --project OpenRA.Docs --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings.md"
 
       - name: Push Wiki
         run: |
@@ -99,7 +100,7 @@ jobs:
     name: Update docs.openra.net
     needs: prepare
     if: github.repository == 'openra/openra'
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Debug output
         run: |
@@ -110,15 +111,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
+          fetch-depth: 0
 
-      - name: Install .NET 6
+      - name: Install .NET 9
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '9.0.x'
 
       - name: Prepare Environment
         run: |
-          make all
+          dotnet build
 
       # version_type is release/playtest/bleed - the name of the target branch.
       - name: Clone docs.openra.net
@@ -131,10 +133,10 @@ jobs:
 
       - name: Generate docs files
         run: |
-          ./utility.sh all --docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
-          ./utility.sh all --weapon-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
-          ./utility.sh all --sprite-sequence-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
-          ./utility.sh all --lua-docs "${{ needs.prepare.outputs.git_tag }}" > "docs/api/lua.md"
+          dotnet run --project OpenRA.Docs --docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
+          dotnet run --project OpenRA.Docs --weapon-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
+          dotnet run --project OpenRA.Docs --sprite-sequence-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          dotnet run --project OpenRA.Docs --lua-docs "${{ needs.prepare.outputs.git_tag }}" > "docs/api/lua.md"
 
       - name: Update docs.openra.net
         run: |
